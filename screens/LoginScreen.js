@@ -1,18 +1,32 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState,useEffect } from 'react';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigation } from '@react-navigation/native';
+import { auth } from '../firebase'
 
 const LoginScreen = () => {
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const navigation = useNavigation()
+
+    useEffect(() => {
+      const unsubscribe = auth.onAuthStateChanged(user => {
+        if (user) {
+            navigation.replace("Home")
+        }
+      })
+    
+      return unsubscribe
+    }, [])
+    
 
     const handleSignUp = () => {
-        const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
         .then(userCredentials => {
             const user = userCredentials.user;
-            console.log(user.email);
+            console.log("Registered with email: ", user.email);
         })
         .catch(error => {
             let errorCode = error.code;
@@ -23,6 +37,14 @@ const LoginScreen = () => {
                 alert(errorMessage);
             }
             console.log(error);
+        })
+    }
+
+    const handleSignIn = () => {
+        signInWithEmailAndPassword(auth, email, password)
+        .then(userCredentials => {
+            const user = userCredentials.user;
+            console.log("Logged in with email: ", user.email);
         })
     }
 
@@ -53,7 +75,7 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-        onPress={() => {}}
+        onPress={handleSignIn}
         style={styles.button}
         >
             <Text style={styles.buttonText}>Login</Text>

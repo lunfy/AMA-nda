@@ -1,10 +1,10 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useState,useEffect } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../firebase'
 
-const LoginScreen = () => {
+const LoginScreen = (props) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,24 +21,27 @@ const LoginScreen = () => {
       return unsubscribe
     }, [])
     
-
-    const handleSignUp = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-        .then(userCredentials => {
-            const user = userCredentials.user;
-            console.log("Registered with email: ", user.email);
-        })
-        .catch(error => {
-            let errorCode = error.code;
-            let errorMessage = error.message;
-            if (errorCode == 'auth/weak-password') {
-                alert('The password is too weak.');
-            } else {
-                alert(errorMessage);
-            }
-            console.log(error);
-        })
+    const navToReg = () => {
+        navigation.navigate('Register')
     }
+
+    // const handleSignUp = () => {
+    //     createUserWithEmailAndPassword(auth, email, password)
+    //     .then(userCredentials => {
+    //         const user = userCredentials.user;
+    //         console.log("Registered with email: ", user.email);
+    //     })
+    //     .catch(error => {
+    //         let errorCode = error.code;
+    //         let errorMessage = error.message;
+    //         if (errorCode == 'auth/weak-password') {
+    //             alert('The password is too weak.');
+    //         } else {
+    //             alert(errorMessage);
+    //         }
+    //         console.log(error);
+    //     })
+    // }
 
     const handleSignIn = () => {
         signInWithEmailAndPassword(auth, email, password)
@@ -49,47 +52,53 @@ const LoginScreen = () => {
     }
 
   return (
-    <KeyboardAvoidingView
-    style={styles.container}
-    behavior="padding"
-    >
-      <View style={styles.inputContainer}>
-        <TextInput
-        placeholder='Email'
-        values={email}
-        onChangeText={emailInput => setEmail(emailInput)}
-        style={styles.input}
-        autoCapitalize='none'
-        autoCorrect='false'
-        />
-
-        <TextInput
-        placeholder='Password'
-        values={password}
-        onChangeText={passwordInput => setPassword(passwordInput)}
-        style={styles.input}
-        secureTextEntry
-        />
-
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-        onPress={handleSignIn}
-        style={styles.button}
+    <ImageBackground 
+        source={props.bgImg}
+        resizeMode="cover"
+        style={styles.image}
         >
-            <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-        onPress={handleSignUp}
-        style={[styles.button, styles.buttonOutline]}
+        <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding"
         >
-            <Text style={styles.buttonOutlineText}>Register</Text>
-        </TouchableOpacity>
+        <View style={styles.inputContainer}>
+            <TextInput
+            placeholder='Email'
+            values={email}
+            onChangeText={emailInput => setEmail(emailInput)}
+            style={styles.input}
+            autoCapitalize='none'
+            autoCorrect='false'
+            />
 
-      </View>
-    </KeyboardAvoidingView>
+            <TextInput
+            placeholder='Password'
+            values={password}
+            onChangeText={passwordInput => setPassword(passwordInput)}
+            style={styles.input}
+            secureTextEntry
+            />
+
+        </View>
+
+        <View style={styles.buttonContainer}>
+            <TouchableOpacity
+            onPress={handleSignIn}
+            style={styles.button}
+            >
+                <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+            onPress={navToReg}
+            style={[styles.button, styles.buttonOutline]}
+            >
+                <Text style={styles.buttonOutlineText}>Register</Text>
+            </TouchableOpacity>
+
+        </View>
+        </KeyboardAvoidingView>
+    </ImageBackground>
   )
 }
 
@@ -139,5 +148,9 @@ const styles = StyleSheet.create({
         color: '#0782F9',
         fontWeight: '700',
         fontSize: 16
+    },
+    image: {
+        flex: 1,
+        justifyContent: 'center'
     }
 })

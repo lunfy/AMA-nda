@@ -1,10 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, SafeAreaView, View, ImageBackground } from 'react-native'
 import React from 'react'
-import { signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
 
-const HomeScreen = () => {
+const HomeScreen = (props) => {
 
     const navigation = useNavigation()
 
@@ -18,15 +17,21 @@ const HomeScreen = () => {
     }
 
   return (
-    <View style={styles.container}>
-      <Text>Email: {auth.currentUser?.email}</Text>
-      <TouchableOpacity
-      onPress={handleSignOut}
-      style={styles.button}
-      >
-        <Text style={styles.buttonText}>Sign Out</Text>
-      </TouchableOpacity>
-    </View>
+    <ImageBackground 
+        source={props.bgImg}
+        resizeMode="cover"
+        style={styles.image}
+        >
+        <View style={styles.container}>
+            <Text>Email: {auth.currentUser?.email}</Text>
+            <TouchableOpacity
+            onPress={handleSignOut}
+            style={styles.button}
+            >
+                <Text style={styles.buttonText}>Sign Out</Text>
+            </TouchableOpacity>
+        </View>
+    </ImageBackground>
   )
 }
 
@@ -36,11 +41,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        
     },
     button: {
         backgroundColor: '#0782F9',
-        width: '60%',
         padding: 15,
         borderRadius: 15,
         alignItems: 'center',
@@ -50,5 +55,9 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: '700',
         fontSize: 16
+    },
+    image: {
+        flex: 1,
+        justifyContent: 'center'
     }
 })

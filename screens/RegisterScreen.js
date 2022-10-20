@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
@@ -20,6 +20,12 @@ const RegisterScreen = (props) => {
         .then(userCredentials => {
             const user = userCredentials.user;
             console.log("Registered with email: ", user.email);
+            toast.show("Registration Successful!", {
+                type: "success",
+                placement: "center",
+                duration: 2000,
+                animationType: "slide-in"
+            })
         })
         .catch(error => {
             let errorCode = error.code;
@@ -68,10 +74,10 @@ const RegisterScreen = (props) => {
                 />
 
                 <TouchableOpacity
-                onPress={() => Toaster.success('This is success message')}
+                onPress={handleSignUp}
                 style={[styles.button, styles.buttonText]}
                 >
-                    <Text style={styles.buttonOutlineText}>Register</Text>
+                    <Text style={styles.buttonText}>Register</Text>
                 </TouchableOpacity>
 
             </View>

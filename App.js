@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import Toast from "react-native-toast-notifications";
 
 const Stack = createNativeStackNavigator();
 const image = require('./assets/RTH7GG6.jpeg')
@@ -31,6 +32,7 @@ export default function App() {
 
         </Stack.Navigator>
       </NavigationContainer>
+      <Toast ref={(ref) => global['toast'] = ref} />
     </PaperProvider>
   );
 }

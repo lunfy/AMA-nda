@@ -1,4 +1,4 @@
-import { ImageBackground, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image,ImageBackground, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useState,useEffect } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
@@ -7,9 +7,11 @@ import { auth } from '../firebase'
 const LoginScreen = (props) => {
 
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('')
 
     const navigation = useNavigation()
+
+    const logo = require('../assets/ama-nda-resize.png')
 
     useEffect(() => {
       const unsubscribe = auth.onAuthStateChanged(user => {
@@ -25,29 +27,17 @@ const LoginScreen = (props) => {
         navigation.navigate('Register')
     }
 
-    // const handleSignUp = () => {
-    //     createUserWithEmailAndPassword(auth, email, password)
-    //     .then(userCredentials => {
-    //         const user = userCredentials.user;
-    //         console.log("Registered with email: ", user.email);
-    //     })
-    //     .catch(error => {
-    //         let errorCode = error.code;
-    //         let errorMessage = error.message;
-    //         if (errorCode == 'auth/weak-password') {
-    //             alert('The password is too weak.');
-    //         } else {
-    //             alert(errorMessage);
-    //         }
-    //         console.log(error);
-    //     })
-    // }
-
     const handleSignIn = () => {
         signInWithEmailAndPassword(auth, email, password)
         .then(userCredentials => {
             const user = userCredentials.user;
             console.log("Logged in with email: ", user.email);
+            toast.show("Login Successful!", {
+                type: "success",
+                placement: "center",
+                duration: 2000,
+                animationType: "slide-in"
+            })
         })
     }
 
@@ -61,42 +51,45 @@ const LoginScreen = (props) => {
         style={styles.container}
         behavior="padding"
         >
-        <View style={styles.inputContainer}>
-            <TextInput
-            placeholder='Email'
-            values={email}
-            onChangeText={emailInput => setEmail(emailInput)}
-            style={styles.input}
-            autoCapitalize='none'
-            autoCorrect='false'
-            />
+            <View style={styles.logo}>
+                <Image source={logo}
+                resizeMethod="auto"
+                resizeMode="cover" />
+                </View>
+            <View style={styles.inputContainer}>
+                <TextInput
+                placeholder='Email'
+                values={email}
+                onChangeText={emailInput => setEmail(emailInput)}
+                style={styles.input}
+                autoCapitalize='none'
+                autoCorrect='false'
+                />
 
-            <TextInput
-            placeholder='Password'
-            values={password}
-            onChangeText={passwordInput => setPassword(passwordInput)}
-            style={styles.input}
-            secureTextEntry
-            />
+                <TextInput
+                placeholder='Password'
+                values={password}
+                onChangeText={passwordInput => setPassword(passwordInput)}
+                style={styles.input}
+                secureTextEntry
+                />
+            </View>
 
-        </View>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                onPress={handleSignIn}
+                style={styles.button}
+                >
+                    <Text style={styles.buttonText}>Login</Text>
+                </TouchableOpacity>
 
-        <View style={styles.buttonContainer}>
-            <TouchableOpacity
-            onPress={handleSignIn}
-            style={styles.button}
-            >
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-            onPress={navToReg}
-            style={[styles.button, styles.buttonOutline]}
-            >
-                <Text style={styles.buttonOutlineText}>Register</Text>
-            </TouchableOpacity>
-
-        </View>
+                <TouchableOpacity
+                onPress={navToReg}
+                style={[styles.button, styles.buttonOutline]}
+                >
+                    <Text style={styles.buttonOutlineText}>Register</Text>
+                </TouchableOpacity>
+            </View>
         </KeyboardAvoidingView>
     </ImageBackground>
   )
@@ -152,5 +145,9 @@ const styles = StyleSheet.create({
     image: {
         flex: 1,
         justifyContent: 'center'
+    },
+    logo: {
+        backgroundColor: 'rgba(52, 52, 52, 0.5)',
+        borderRadius: 10
     }
 })

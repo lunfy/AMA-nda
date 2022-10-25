@@ -30,10 +30,20 @@ const RegisterScreen = (props) => {
         .catch(error => {
             let errorCode = error.code;
             let errorMessage = error.message;
-            if (errorCode == 'auth/weak-password') {
-                alert('The password is too weak.');
+            if (errorCode == 'auth/weak-password' || password.length < 6) {
+                toast.show("The password is too weak.", {
+                    type: "warning",
+                    placement: "center",
+                    duration: 2000,
+                    animationType: "slide-in"
+                });
             } else {
-                alert(errorMessage);
+                toast.show(`${errorMessage}`, {
+                    type: "danger",
+                    placement: "center",
+                    duration: 2000,
+                    animationType: "slide-in"
+                } );
             }
             console.log(error);
         })

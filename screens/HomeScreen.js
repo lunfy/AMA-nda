@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, SafeAreaView, View, ImageBackground
 import React from 'react'
 import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
+import MainDrawer from '../components/Drawer'
 
 const HomeScreen = (props) => {
 
@@ -22,6 +23,7 @@ const HomeScreen = (props) => {
         resizeMode="cover"
         style={styles.image}
         >
+
         <View style={styles.container}>
             <Text>Email: {auth.currentUser?.email}</Text>
             <TouchableOpacity

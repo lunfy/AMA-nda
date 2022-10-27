@@ -1,14 +1,16 @@
 import { DrawerContentScrollView, DrawerItemList, DrawerItem } from "@react-navigation/drawer";
-import { Linking, View, Text } from "react-native";
+import { useTheme } from "@react-navigation/native";
+import { Linking, View, Text, TouchableOpacity } from "react-native";
 import { auth } from '../firebase'
 
-const MainMenu = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Menu Screen</Text>
-    </View>
-  );
-}
+// const MainMenu = () => {
+//   const { colors } = useTheme();
+//   return (
+//     <View style={{ backgroundColor: colors.card, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//       <Text style={{ color: colors.text }}>Menu Screen</Text>
+//     </View>
+//   );
+// }
 
 const Notifications = () => {
   return (
@@ -67,4 +69,4 @@ function CustomDrawerContent({ navigation }) {
         );
   }
 
-  export { CustomDrawerContent, MainMenu, Notifications, About }
+  export { CustomDrawerContent, Notifications, About }

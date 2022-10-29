@@ -3,15 +3,6 @@ import { useTheme } from "@react-navigation/native";
 import { Linking, View, Text, TouchableOpacity } from "react-native";
 import { auth } from '../firebase'
 
-// const MainMenu = () => {
-//   const { colors } = useTheme();
-//   return (
-//     <View style={{ backgroundColor: colors.card, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//       <Text style={{ color: colors.text }}>Menu Screen</Text>
-//     </View>
-//   );
-// }
-
 const Notifications = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -70,3 +61,8 @@ function CustomDrawerContent({ navigation }) {
   }
 
   export { CustomDrawerContent, Notifications, About }
+
+  // <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+  //     <Button title='btn' onPress={()=>props.theme('dark')} />
+  //     <Button title='btn2' onPress={()=>props.theme('light')} />
+  // </View>

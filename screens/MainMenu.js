@@ -12,7 +12,7 @@ const MainMenu = (props) => {
     const img0 = require('../assets/ama.png')
     const img1 = require('../assets/cw.jpeg')
     const img2 = require('../assets/translater.jpeg')
-    const img3 = require('../assets/pf.jpeg')
+    const img3 = require('../assets/edit.png')
     const navigation = useNavigation()
 
     const { colors } = useTheme();
@@ -102,50 +102,13 @@ const MainMenu = (props) => {
             <View style={styles.item}>
                 <Card>
                     <Card.Content>
-                        <TouchableOpacity onPress={() => navigation.navigate('About')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Edit')}>
                             <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={img3} />
                         </TouchableOpacity>
                     </Card.Content>
                 </Card>
             </View>
         </View>
-
-        
-        // <SafeAreaView>
-        //     <ScrollView>
-        //         <View style={{ paddingBottom: 10, justifyContent: 'center', alignItems: 'center' }}>
-        //             <Text style={{ color: colors.text }}>Ask Me Anything!</Text>
-        //             {/* <Button title='btn' onPress={()=>props.theme('dark')} />
-        //             <Button title='btn2' onPress={()=>props.theme('light')} /> */}
-        //         </View>
-
-        //         <View style={{ justifyContent: 'center', paddingHorizontal: 10}}>
-        //             <TextInput
-        //                 multiline={true}
-        //                 numberOfLines={4}
-        //                 onChangeText={(text) => {
-        //                     setUserInput(text)
-        //                 }}
-        //                 value={userInput}
-        //                 label="Ask Me Anything!"
-        //                 />
-        //             <Button title='Submit' onPress={getRes} />
-
-        //             { obj ? (
-        //                 <>
-        //             <View style={{ flex: 1, backgroundColor: colors.card, borderWidth: 1, paddingHorizontal: 10, paddingBottom: 30 }}>
-        //                     <Text style={{ color: colors.text }}>
-        //                         {obj ? obj : ''}
-        //                     </Text>
-        //             </View>
-        //             <Button style={{ color: colors.text }} title="Click here to copy to Clipboard" onPress={copyToClipboard} />
-        //             </>
-        //             ) : <></>
-        //         }
-        //         </View>
-        
-        //     </ScrollView>
-        // </SafeAreaView>
     );
 }
 

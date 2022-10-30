@@ -88,7 +88,7 @@ const Code = (props) => {
 
                 <View style={{ justifyContent: 'center', paddingHorizontal: 10}}>
 
-                    <View style={{ flext: 1, flexDirection: 'row', marginBottom: 20 }}>
+                    <View style={{ flex: 1, flexDirection: 'row', marginBottom: 20 }}>
                         <Text>Write a function in</Text>
                         <View style={{ paddingTop: 1, paddingHorizontal: 3, marginHorizontal: 5, borderWidth: 1 }}>
                             <ModalDropdown 

@@ -11,6 +11,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import Ama from './screens/AMA';
 import Code from './screens/Code'
 import Translate from './screens/Translate';
+import Proofread from './screens/Edit';
 import Toast from "react-native-toast-notifications";
 
 const Stack = createNativeStackNavigator();
@@ -48,6 +49,10 @@ export default function App() {
 
           <Stack.Screen name="Translate">
           {props => <Translate bgImg={image} />}
+          </Stack.Screen>
+
+          <Stack.Screen name="Edit">
+          {props => <Proofread bgImg={image} />}
           </Stack.Screen>
 
         </Stack.Navigator>

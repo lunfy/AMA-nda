@@ -24,7 +24,13 @@ const Proofread = (props) => {
     const [citeAuthor, setCiteAuthor] = useState('')
     const [citeYear, setCiteYear] = useState('')
 
-    let payload = {}
+    let payload = {
+        prompt: `${langTool} the text below:\n\n${userInput}`,
+        max_tokens: 512,
+        temperature: 0,
+        n: 1,
+        model: "text-davinci-002"
+    }
 
     if (citeMode) {
         payload = {
@@ -33,15 +39,7 @@ const Proofread = (props) => {
             temperature: 0,
             n: 1,
             model: "text-davinci-002"
-    }} else {
-        payload = {
-            prompt: `${langTool} the text below:\n\n${userInput}`,
-            max_tokens: 512,
-            temperature: 0,
-            n: 1,
-            model: "text-davinci-002"
-        }
-    }
+    }}
 
     const getRes = () => {
         if (!langTool) {
@@ -55,7 +53,7 @@ const Proofread = (props) => {
             headers: {
                 "Content-Type": "application/json",
                 Authorization:
-                "Bearer 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"
+                `Bearer ${props.openAiKey}`
             }
             })
             .then((res) => {

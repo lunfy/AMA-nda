@@ -11,9 +11,12 @@ import RegisterScreen from './screens/RegisterScreen';
 import Ama from './screens/AMA';
 import Code from './screens/Code'
 import Translate from './screens/Translate';
-import Proofread from './screens/Edit';
+import Edit from './screens/Edit';
 import Toast from "react-native-toast-notifications";
+import { OPEN_API_KEY } from '@env'
+import { processColor } from 'react-native-reanimated';
 
+const apiKey = process.env.OPEN_API_KEY
 const Stack = createNativeStackNavigator();
 const image = require('./assets/RTH7GG6.jpeg')
 
@@ -40,19 +43,19 @@ export default function App() {
           </Stack.Screen>
 
           <Stack.Screen name="Ask Me Anything!">
-          {props => <Ama bgImg={image} />}
+          {props => <Ama openAiKey={apiKey} />}
           </Stack.Screen>
 
           <Stack.Screen name="Code Wizard">
-          {props => <Code bgImg={image} />}
+          {props => <Code openAiKey={apiKey} />}
           </Stack.Screen>
 
           <Stack.Screen name="Translate">
-          {props => <Translate bgImg={image} />}
+          {props => <Translate openAiKey={apiKey} />}
           </Stack.Screen>
 
           <Stack.Screen name="Edit">
-          {props => <Proofread bgImg={image} />}
+          {props => <Edit openAiKey={apiKey} />}
           </Stack.Screen>
 
         </Stack.Navigator>

@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import { useTheme, TextInput, Divider, ActivityIndicator, MD2Colors } from 'react-native-paper';
 import { useState } from 'react';
 import axios from 'axios';
@@ -9,19 +8,13 @@ import ModalDropdown from 'react-native-modal-dropdown'
 
 const Code = (props) => {
 
-    const navigation = useNavigation()
-
     const { colors } = useTheme();
 
     const [userInput, setUserInput] = useState('')
     const [loading, setLoading] = useState(false)
     const [obj, setObj] = useState('')
     const [copiedText, setCopiedText] = useState('')
-    const [visible, setVisible] = useState(false);
     const [codeLang, setCodeLang] = useState('')
-
-    const openMenu = () => setVisible(true);
-    const closeMenu = () => setVisible(false);
 
     let payload = {
         prompt: `Write a function in ${codeLang} for the following question:\n\n${userInput}`,
@@ -36,7 +29,6 @@ const Code = (props) => {
             return alert('Please select a coding language!')
         }
         setLoading(true);
-        console.log(payload)
         axios({
             method: "POST",
             url: "https://api.openai.com/v1/completions",
@@ -44,7 +36,7 @@ const Code = (props) => {
             headers: {
                 "Content-Type": "application/json",
                 Authorization:
-                "Bearer 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"
+                `Bearer ${props.openAiKey}`
             }
             })
             .then((res) => {
@@ -73,11 +65,6 @@ const Code = (props) => {
         setCopiedText(test)
       };
 
-      const handleCodeLang = (item) => {
-        setCodeLang(item)
-        console.log(item)
-      }
-
     return (
         <SafeAreaView>
             <ScrollView>
@@ -102,7 +89,7 @@ const Code = (props) => {
                                 'C++',
                                 'C#'
                             ]}
-                            onSelect={(ind, val) => handleCodeLang(val)}
+                            onSelect={(ind, val) => setCodeLang(val)}
                             />
                         </View>
                         <Text>to solve below:</Text>

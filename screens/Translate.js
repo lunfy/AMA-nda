@@ -28,6 +28,9 @@ const Translate = (props) => {
     }
 
     const getRes = () => {
+        if (!langInput || !reqOutput) {
+            return alert('Please specify input/output languages!')
+        }
         setLoading(true);
         axios({
             method: "POST",
@@ -36,7 +39,7 @@ const Translate = (props) => {
             headers: {
                 "Content-Type": "application/json",
                 Authorization:
-                "Bearer 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"
+                `Bearer ${props.openAiKey}`
             }
             })
             .then((res) => {
@@ -76,31 +79,35 @@ const Translate = (props) => {
                 <View style={{ justifyContent: 'center', paddingHorizontal: 10}}>
 
                     <View style={{ flex: 1, flexDirection: 'row', marginBottom: 20 }}>
-                        <View style={{ paddingTop: 25}}>
+                        <View style={{ paddingTop: 15}}>
                             <Text>Translate from</Text>
                         </View>
                         <View style={{ marginHorizontal: 5, width: '30%' }}>
                             <TextInput
+                            placeholder='Language'
                             mode='outlined'
                             value={langInput}
+                            style={{ height: 25}}
                             onChangeText={(text) => {
                                 setLangInput(text)
                             }}
                             />
                         </View>
-                        <View style={{ paddingTop: 25}}>
+                        <View style={{ paddingTop: 15}}>
                             <Text>to</Text>
                         </View>
                         <View style={{ marginHorizontal: 5, width: '30%' }}>
-                        <TextInput
+                            <TextInput
+                            placeholder='Language'
                             mode='outlined'
                             value={reqOutput}
+                            style={{ height: 25}}
                             onChangeText={(text) => {
                                 setReqOutput(text)
                             }}
                             />
                         </View>
-                        <View style={{ paddingTop: 25}}>
+                        <View style={{ paddingTop: 15}}>
                             <Text>:</Text>
                         </View>
                     </View>

@@ -34,7 +34,7 @@ const Ama = (props) => {
             headers: {
                 "Content-Type": "application/json",
                 Authorization:
-                "Bearer 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"
+                `Bearer ${props.openAiKey}`
             }
             })
             .then((res) => {

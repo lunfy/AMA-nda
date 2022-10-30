@@ -10,7 +10,9 @@ const MainMenu = (props) => {
 
     const img = require('../assets/150.png')
     const img0 = require('../assets/ama.png')
-    const img2 = require('../assets/cw.jpeg')
+    const img1 = require('../assets/cw.jpeg')
+    const img2 = require('../assets/translater.jpeg')
+    const img3 = require('../assets/pf.jpeg')
     const navigation = useNavigation()
 
     const { colors } = useTheme();
@@ -81,6 +83,16 @@ const MainMenu = (props) => {
                 <Card>
                     <Card.Content>
                         <TouchableOpacity onPress={() => navigation.navigate('Code Wizard')}>
+                            <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={img1} />
+                        </TouchableOpacity>
+                    </Card.Content>
+                </Card>
+            </View>
+
+            <View style={styles.item}>
+                <Card>
+                    <Card.Content>
+                        <TouchableOpacity onPress={() => navigation.navigate('Translate')}>
                             <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={img2} />
                         </TouchableOpacity>
                     </Card.Content>
@@ -91,17 +103,7 @@ const MainMenu = (props) => {
                 <Card>
                     <Card.Content>
                         <TouchableOpacity onPress={() => navigation.navigate('About')}>
-                            <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={img} />
-                        </TouchableOpacity>
-                    </Card.Content>
-                </Card>
-            </View>
-
-            <View style={styles.item}>
-                <Card>
-                    <Card.Content>
-                        <TouchableOpacity onPress={() => navigation.navigate('About')}>
-                            <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={img} />
+                            <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={img3} />
                         </TouchableOpacity>
                     </Card.Content>
                 </Card>

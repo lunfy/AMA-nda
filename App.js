@@ -10,6 +10,7 @@ import HomeScreen from './screens/HomeScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import Ama from './screens/AMA';
 import Code from './screens/Code'
+import Translate from './screens/Translate';
 import Toast from "react-native-toast-notifications";
 
 const Stack = createNativeStackNavigator();
@@ -43,6 +44,10 @@ export default function App() {
 
           <Stack.Screen name="Code Wizard">
           {props => <Code bgImg={image} />}
+          </Stack.Screen>
+
+          <Stack.Screen name="Translate">
+          {props => <Translate bgImg={image} />}
           </Stack.Screen>
 
         </Stack.Navigator>

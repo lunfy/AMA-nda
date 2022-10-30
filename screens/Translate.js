@@ -5,26 +5,22 @@ import axios from 'axios';
 import * as Clipboard from 'expo-clipboard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, View, Button, Text } from 'react-native';
-import ModalDropdown from 'react-native-modal-dropdown'
 
-const Code = (props) => {
+const Translate = (props) => {
 
+    const img = require('../assets/150.png')
     const navigation = useNavigation()
 
     const { colors } = useTheme();
-
+    const [langInput, setLangInput] = useState('')
+    const [reqOutput, setReqOutput] = useState('')
     const [userInput, setUserInput] = useState('')
     const [loading, setLoading] = useState(false)
     const [obj, setObj] = useState('')
     const [copiedText, setCopiedText] = useState('')
-    const [visible, setVisible] = useState(false);
-    const [codeLang, setCodeLang] = useState('')
-
-    const openMenu = () => setVisible(true);
-    const closeMenu = () => setVisible(false);
 
     let payload = {
-        prompt: `Write a function in ${codeLang} for the following question:\n\n${userInput}`,
+        prompt: `Translate the text provided from ${langInput} to ${reqOutput}: \n\n${userInput}`,
         max_tokens: 512,
         temperature: 0.5,
         n: 1,
@@ -32,11 +28,7 @@ const Code = (props) => {
     }
 
     const getRes = () => {
-        if (!codeLang) {
-            return alert('Please select a coding language!')
-        }
         setLoading(true);
-        console.log(payload)
         axios({
             method: "POST",
             url: "https://api.openai.com/v1/completions",
@@ -69,14 +61,9 @@ const Code = (props) => {
       }
 
       const fetchCopiedText = async () => {
-        const test = await Clipboard.getStringAsync();
-        setCopiedText(test)
+            const test = await Clipboard.getStringAsync();
+            setCopiedText(test)
       };
-
-      const handleCodeLang = (item) => {
-        setCodeLang(item)
-        console.log(item)
-      }
 
     return (
         <SafeAreaView>
@@ -88,35 +75,45 @@ const Code = (props) => {
 
                 <View style={{ justifyContent: 'center', paddingHorizontal: 10}}>
 
-                    <View style={{ flext: 1, flexDirection: 'row', marginBottom: 20 }}>
-                        <Text>Write a function in</Text>
-                        <View style={{ paddingTop: 1, paddingHorizontal: 3, marginHorizontal: 5, borderWidth: 1 }}>
-                            <ModalDropdown 
-                            options={[
-                                'JavaScript',
-                                'Ruby',
-                                'Java',
-                                'Go',
-                                'Python',
-                                'C',
-                                'C++',
-                                'C#'
-                            ]}
-                            onSelect={(ind, val) => handleCodeLang(val)}
+                    <View style={{ flex: 1, flexDirection: 'row', marginBottom: 20 }}>
+                        <View style={{ paddingTop: 25}}>
+                            <Text>Translate from</Text>
+                        </View>
+                        <View style={{ marginHorizontal: 5, width: '30%' }}>
+                            <TextInput
+                            mode='outlined'
+                            value={langInput}
+                            onChangeText={(text) => {
+                                setLangInput(text)
+                            }}
                             />
                         </View>
-                        <Text>to solve below:</Text>
+                        <View style={{ paddingTop: 25}}>
+                            <Text>to</Text>
+                        </View>
+                        <View style={{ marginHorizontal: 5, width: '30%' }}>
+                        <TextInput
+                            mode='outlined'
+                            value={reqOutput}
+                            onChangeText={(text) => {
+                                setReqOutput(text)
+                            }}
+                            />
+                        </View>
+                        <View style={{ paddingTop: 25}}>
+                            <Text>:</Text>
+                        </View>
                     </View>
 
                     <TextInput
-                        multiline={true}
-                        numberOfLines={4}
-                        onChangeText={(text) => {
-                            setUserInput(text)
-                        }}
-                        value={userInput}
-                        label="Input coding problem or question"
-                        />
+                    multiline={true}
+                    numberOfLines={4}
+                    onChangeText={(text) => {
+                        setUserInput(text)
+                    }}
+                    value={userInput}
+                    label="Input text here to translate"
+                    />
                     <Button title='Submit' onPress={getRes} />
 
                     <Divider style={{ marginVertical: 20, marginHorizontal: 5 }} bold='true' />
@@ -149,4 +146,4 @@ const Code = (props) => {
     );
 }
 
-export default Code
+export default Translate

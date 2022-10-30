@@ -19,7 +19,7 @@ const Ama = (props) => {
 
     let payload = {
         prompt: `${userInput}`,
-        max_tokens: 256,
+        max_tokens: 512,
         temperature: 0.5,
         n: 1,
         model: "text-davinci-002"

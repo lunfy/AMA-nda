@@ -1,43 +1,62 @@
-import { StyleSheet, Text, TouchableOpacity, SafeAreaView, View, ImageBackground } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, SafeAreaView, View, ImageBackground, Button } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { useTheme } from "@react-navigation/native";
 import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
-import MainDrawer from '../components/Drawer'
+import axios from 'axios'
+import { createDrawerNavigator,DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer'
+import { CustomDrawerContent, Notifications, About } from '../components/CustomDrawerContent'
+import MainMenu from './MainMenu';
+  
+  const Drawer = createDrawerNavigator();
+  
+  const MyDrawer = (props) => {
 
-const HomeScreen = (props) => {
+    const setIt = (param) => {
+        props.theme(param)
+    }
+
+    return (
+      <Drawer.Navigator
+        screenOptions={{
+            drawerStyle: {
+                width: 200
+            }
+        }}
+        useLegacyImplementation
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
+        <Drawer.Screen name="Main Menu">
+            {props => <MainMenu theme={setIt} bgImg={props.bgImg} /> }
+        </Drawer.Screen>
+        <Drawer.Screen name="About" component={About} />
+        <Drawer.Screen name="Notifications" component={Notifications} />
+      </Drawer.Navigator>
+    );
+  }
+  
+
+   
+export default function HomeScreen(props) {
 
     const navigation = useNavigation()
 
-    const handleSignOut = () => {
-        auth
-        .signOut()
-        .then(() => {
-            navigation.replace("Login")
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+          if (!user) {
+              navigation.replace("Login")
+          }
         })
-        .catch(error => alert(error.message))
-    }
+      
+        return unsubscribe
+      }, [])
 
   return (
-    <ImageBackground 
-        source={props.bgImg}
-        resizeMode="cover"
-        style={styles.image}
-        >
-
-        <View style={styles.container}>
-            <Text>Email: {auth.currentUser?.email}</Text>
-            <TouchableOpacity
-            onPress={handleSignOut}
-            style={styles.button}
-            >
-                <Text style={styles.buttonText}>Sign Out</Text>
-            </TouchableOpacity>
-        </View>
-    </ImageBackground>
+    <>
+        <MyDrawer theme={props.theme}/>  
+    </>
   )
-}
-
-export default HomeScreen
+    }
 
 const styles = StyleSheet.create({
     container: {

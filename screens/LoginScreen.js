@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         backgroundColor: 'rgba(52, 52, 52, 0.5)',
-        borderRadius: 10
+        borderRadius: 10,
+        marginBottom: 10
     }
 })

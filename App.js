@@ -14,7 +14,6 @@ import Translate from './screens/Translate';
 import Edit from './screens/Edit';
 import Toast from "react-native-toast-notifications";
 import { OPEN_API_KEY } from '@env'
-import { processColor } from 'react-native-reanimated';
 
 const apiKey = process.env.OPEN_API_KEY
 const Stack = createNativeStackNavigator();

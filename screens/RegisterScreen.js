@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, ImageBackground, StyleSheet, TextInput } 
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from '../firebase'
 
 const RegisterScreen = (props) => {
@@ -18,6 +18,7 @@ const RegisterScreen = (props) => {
 
         createUserWithEmailAndPassword(auth, email, password)
         .then(userCredentials => {
+            sendEmailVerification(userCredentials)
             const user = userCredentials.user;
             console.log("Registered with email: ", user.email);
             toast.show("Registration Successful!", {

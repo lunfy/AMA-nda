@@ -1,14 +1,13 @@
-import { useNavigation, useTheme } from "@react-navigation/native";
-import { useState, useEffect } from "react";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image, ImageBackground } from "react-native";
-import * as Clipboard from 'expo-clipboard'
-import { Avatar, Card, TextInput, Title, Paragraph, Button } from "react-native-paper";
-import axios from 'axios'
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useCallback, useState } from "react";
+import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
+import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
+import { Card, Banner, Button, Paragraph, Dialog, Portal, } from "react-native-paper";
+import { auth } from "../firebase"
+import { sendEmailVerification } from "firebase/auth/react-native";
+import logo from '../assets/logo_black.png'
 
 const MainMenu = (props) => {
 
-    const img = require('../assets/150.png')
     const img0 = require('../assets/ama.png')
     const img1 = require('../assets/cw.jpeg')
     const img2 = require('../assets/translater.jpeg')
@@ -16,59 +15,74 @@ const MainMenu = (props) => {
     const navigation = useNavigation()
 
     const { colors } = useTheme();
-    const [userInput, setUserInput] = useState('')
-    const [loading, setLoading] = useState(false)
-    const [obj, setObj] = useState('')
-    const [copiedText, setCopiedText] = useState('')
+    const [visible, setVisible] = useState(false)
 
-    let payload = {
-        prompt: `${userInput}`,
-        max_tokens: 512,
-        temperature: 0.5,
-        n: 1,
-        model: "text-davinci-002"
-    }
+    const verifiedUser = auth.currentUser.emailVerified
 
-    const getRes = () => {
-        setLoading(true);
-        axios({
-            method: "POST",
-            url: "https://api.openai.com/v1/completions",
-            data: payload,
-            headers: {
-                "Content-Type": "application/json",
-                Authorization:
-                "Bearer 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"
-            }
-            })
-            .then((res) => {
-                responseHandler(res);
-            })
-            .catch((e) => {
-                setLoading(false);
-                alert(e.message, e)
-            });
-    }
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
+
+    // useFocusEffect(
+    //     useCallback(() => {
     
-      const responseHandler = (res) => {
-        if (res.status === 200) {
-            const response = res.data.choices[0].text
-            setObj(response);
-            setLoading(false);
-        }
-      };
+    //       alert('Screen was focused');
+    
+    //       return () => {
+    
+    //         alert('Screen was unfocused');
+    //         // Useful for cleanup functions
+    
+    //       };
+    //     }, [])
+    //   );
 
-      const copyToClipboard = async () => {
-        await Clipboard.setStringAsync(obj)
-      }
-
-      const fetchCopiedText = async () => {
-            const test = await Clipboard.getStringAsync();
-            setCopiedText(test)
-      };
+    const sendVerify = () => {
+        sendEmailVerification(auth.currentUser)
+        showDialog()
+    }
 
     return (
-        <View style={[styles.container]}>
+        <View style={{ flex: 1 }}>
+            { verifiedUser ? '' : (
+            <Banner
+            visible='true'
+            actions={[
+                {
+                label: 'Send Verification Email',
+                onPress: () => sendVerify(),
+                },
+            ]}
+            icon={({size}) => (
+                <Image
+                source={logo}
+                style={{
+                    width: size,
+                    height: size,
+                }}
+                />
+            )}>
+                To access the full features of the app, please confirm your email address.
+            </Banner>)
+            }
+
+        <View>
+            <Portal>
+            <Dialog visible={visible} onDismiss={hideDialog}>
+                <Dialog.Title>Verification Email Sent</Dialog.Title>
+                <Dialog.Content>
+                <Paragraph>You are required to log in again after verifying your email.</Paragraph>
+                <Paragraph></Paragraph>
+                <Paragraph>Would you like to log out now?</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                <Button onPress={hideDialog}>Continue</Button>
+                <Button onPress={auth.signOut}>Log Out</Button>
+                </Dialog.Actions>
+            </Dialog>
+            </Portal>
+        </View>
+
+        <View style={styles.container}>
             <View style={styles.item}>
                 <Card>
                     <Card.Content>
@@ -108,6 +122,7 @@ const MainMenu = (props) => {
                     </Card.Content>
                 </Card>
             </View>
+        </View>
         </View>
     );
 }

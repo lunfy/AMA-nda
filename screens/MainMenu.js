@@ -22,23 +22,29 @@ const MainMenu = (props) => {
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
 
-    // useFocusEffect(
-    //     useCallback(() => {
-    
-    //       alert('Screen was focused');
-    
-    //       return () => {
-    
-    //         alert('Screen was unfocused');
-    //         // Useful for cleanup functions
-    
-    //       };
-    //     }, [])
-    //   );
-
     const sendVerify = () => {
         sendEmailVerification(auth.currentUser)
         showDialog()
+    }
+
+    const LimitAccess = (props) => {
+        return (
+            <View style={styles.item}>
+                <Card>
+                    <Card.Content>
+                        { verifiedUser ? (
+                        <TouchableOpacity onPress={() => navigation.navigate(props.nav)}>
+                            <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={props.imgSrc} />
+                        </TouchableOpacity>) 
+                        : 
+                        (<TouchableOpacity onPress={() => alert('Verify your email address for full access!')}>
+                            <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={props.imgSrc} />
+                        </TouchableOpacity>)
+                        }
+                    </Card.Content>
+                </Card>
+            </View>
+        )
     }
 
     return (
@@ -93,12 +99,18 @@ const MainMenu = (props) => {
                 </Card>
             </View>
 
-            <View style={styles.item}>
+            <LimitAccess nav='Code Wizard' imgSrc={img1} />
+            <LimitAccess nav='Translate' imgSrc={img2} />
+            <LimitAccess nav='Edit' imgSrc={img3} />
+
+            {/* <View style={styles.item}>
                 <Card>
                     <Card.Content>
+                        { verifiedUser ? (
                         <TouchableOpacity onPress={() => navigation.navigate('Code Wizard')}>
                             <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={img1} />
-                        </TouchableOpacity>
+                        </TouchableOpacity>) : (<LimitAccess imgSrc={img1}/>)
+                        }
                     </Card.Content>
                 </Card>
             </View>
@@ -106,9 +118,11 @@ const MainMenu = (props) => {
             <View style={styles.item}>
                 <Card>
                     <Card.Content>
+                        { verifiedUser ? (
                         <TouchableOpacity onPress={() => navigation.navigate('Translate')}>
                             <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={img2} />
-                        </TouchableOpacity>
+                        </TouchableOpacity>) : (<LimitAccess imgSrc={img2}/>)
+                        }
                     </Card.Content>
                 </Card>
             </View>
@@ -116,12 +130,14 @@ const MainMenu = (props) => {
             <View style={styles.item}>
                 <Card>
                     <Card.Content>
+                        { verifiedUser ? (
                         <TouchableOpacity onPress={() => navigation.navigate('Edit')}>
                             <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={img3} />
-                        </TouchableOpacity>
+                        </TouchableOpacity>) : (<LimitAccess imgSrc={img3}/>)
+                        }
                     </Card.Content>
                 </Card>
-            </View>
+            </View> */}
         </View>
         </View>
     );

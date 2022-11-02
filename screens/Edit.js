@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, View, Button, Text } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown'
 
-const Proofread = (props) => {
+const Edit = (props) => {
 
     const navigation = useNavigation()
 
@@ -250,4 +250,4 @@ const Proofread = (props) => {
     );
 }
 
-export default Proofread
+export default Edit

@@ -44,6 +44,12 @@ function CustomDrawerContent({ navigation }) {
               }}
             />
             <DrawerItem
+              label="Usage History"
+              onPress={() => {
+                navigation.navigate('History');
+              }}
+            />
+            <DrawerItem
               label="About"
               onPress={() => {
                 navigation.navigate('About');

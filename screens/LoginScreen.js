@@ -13,15 +13,19 @@ const LoginScreen = (props) => {
 
     const logo = require('../assets/ama-nda-resize.png')
 
-    const jwt = (token) => {
+    const setJwtUid = (token,id) => {
         props.jwtToken(token)
+        props.userId(id)
+        console.log("successfully set jwt and uid")
     }
 
     useEffect(() => {
       const unsubscribe = auth.onAuthStateChanged(user => {
         if (user) {
-            user.getIdToken().then(function(idToken) {  // <------ Check this line
-                jwt(idToken)
+            const uid = auth.currentUser.uid
+            user.getIdToken()
+            .then((idToken) => {  // <------ Check this line
+                setJwtUid(idToken,uid)
              })
             navigation.replace("Home")
         }

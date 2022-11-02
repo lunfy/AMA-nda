@@ -17,6 +17,8 @@ const Ama = (props) => {
     const [obj, setObj] = useState('')
     const [copiedText, setCopiedText] = useState('')
 
+    console.log("uid: ", props.userId)
+
     let payload = {
         prompt: `${userInput}`,
         max_tokens: 512,

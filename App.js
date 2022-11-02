@@ -12,6 +12,7 @@ import Ama from './screens/AMA';
 import Code from './screens/Code'
 import Translate from './screens/Translate';
 import Edit from './screens/Edit';
+import History from './screens/History'
 import Toast from "react-native-toast-notifications";
 import { OPEN_API_KEY, DEV_USERS_REGISTER } from '@env'
 
@@ -25,6 +26,7 @@ export default function App() {
 
   const [theTheme, setTheTheme] = useState(useColorScheme())
   const [jwt, setJwt] = useState('')
+  const [uid, setUid] = useState('')
 
   let scheme = theTheme
 
@@ -33,7 +35,7 @@ export default function App() {
       <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack.Navigator>
           <Stack.Screen options={{ headerShown: false}} name="Login">
-          {props => <LoginScreen bgImg={image} jwtToken={setJwt} />}
+          {props => <LoginScreen bgImg={image} jwtToken={setJwt} userId={setUid} />}
           </Stack.Screen>
 
           <Stack.Screen options={{ headerShown: false}} name="Home">
@@ -45,19 +47,23 @@ export default function App() {
           </Stack.Screen>
 
           <Stack.Screen name="Ask Me Anything!">
-          {props => <Ama openAiKey={OAIkey} jwtToken={jwt} />}
+          {props => <Ama openAiKey={OAIkey} jwtToken={jwt} userId={uid} />}
           </Stack.Screen>
 
           <Stack.Screen name="Code Wizard">
-          {props => <Code openAiKey={OAIkey} jwtToken={jwt} />}
+          {props => <Code openAiKey={OAIkey} jwtToken={jwt} userId={uid} />}
           </Stack.Screen>
 
           <Stack.Screen name="Translate">
-          {props => <Translate openAiKey={OAIkey} jwtToken={jwt} />}
+          {props => <Translate openAiKey={OAIkey} jwtToken={jwt} userId={uid} />}
           </Stack.Screen>
 
           <Stack.Screen name="Edit">
-          {props => <Edit openAiKey={OAIkey} jwtToken={jwt} />}
+          {props => <Edit openAiKey={OAIkey} jwtToken={jwt} userId={uid} />}
+          </Stack.Screen>
+
+          <Stack.Screen name="History">
+          {props => <History jwtToken={jwt} userId={uid} />}
           </Stack.Screen>
 
         </Stack.Navigator>

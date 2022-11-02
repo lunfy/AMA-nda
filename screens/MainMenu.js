@@ -20,6 +20,7 @@ const MainMenu = (props) => {
 
     const verifiedUser = auth.currentUser.emailVerified
     console.log("jwt: ", props.mjwt)
+    console.log("uid: ", auth.currentUser.uid)
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);

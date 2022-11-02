@@ -16,6 +16,8 @@ import MainMenu from './MainMenu';
         props.theme(param)
     }
 
+    const jwt = props.jwtToken
+
     return (
       <Drawer.Navigator
         screenOptions={{
@@ -27,7 +29,7 @@ import MainMenu from './MainMenu';
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen name="Main Menu">
-            {props => <MainMenu theme={setIt} bgImg={props.bgImg} /> }
+            {props => <MainMenu theme={setIt} bgImg={props.bgImg} mjwt={jwt} /> }
         </Drawer.Screen>
         <Drawer.Screen name="About" component={About} />
         <Drawer.Screen name="Notifications" component={Notifications} />
@@ -40,6 +42,7 @@ import MainMenu from './MainMenu';
 export default function HomeScreen(props) {
 
     const navigation = useNavigation()
+    const jwt = props.jwtToken
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -53,7 +56,7 @@ export default function HomeScreen(props) {
 
   return (
     <>
-        <MyDrawer theme={props.theme}/>  
+        <MyDrawer theme={props.theme} jwtToken={jwt}/>  
     </>
   )
     }

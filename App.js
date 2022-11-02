@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AppRegistry, StyleSheet, useColorScheme } from 'react-native';
 import { name as appName } from './app.json'
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -13,15 +13,18 @@ import Code from './screens/Code'
 import Translate from './screens/Translate';
 import Edit from './screens/Edit';
 import Toast from "react-native-toast-notifications";
-import { OPEN_API_KEY } from '@env'
+import { OPEN_API_KEY, DEV_USERS_REGISTER } from '@env'
 
-const apiKey = process.env.OPEN_API_KEY
+const OAIkey = process.env.OPEN_API_KEY
+const regURL = process.env.DEV_USERS_REGISTER
+
 const Stack = createNativeStackNavigator();
 const image = require('./assets/RTH7GG6.jpeg')
 
 export default function App() {
 
   const [theTheme, setTheTheme] = useState(useColorScheme())
+  const [jwt, setJwt] = useState('')
 
   let scheme = theTheme
 
@@ -30,31 +33,31 @@ export default function App() {
       <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack.Navigator>
           <Stack.Screen options={{ headerShown: false}} name="Login">
-          {props => <LoginScreen bgImg={image} />}
+          {props => <LoginScreen bgImg={image} jwtToken={setJwt} />}
           </Stack.Screen>
 
           <Stack.Screen options={{ headerShown: false}} name="Home">
-          {props => <HomeScreen bgImg={image} theme={setTheTheme} />}
+          {props => <HomeScreen bgImg={image} theme={setTheTheme} jwtToken={jwt} />}
           </Stack.Screen>
 
           <Stack.Screen name="Register">
-          {props => <RegisterScreen bgImg={image} />}
+          {props => <RegisterScreen bgImg={image} reg={regURL} />}
           </Stack.Screen>
 
           <Stack.Screen name="Ask Me Anything!">
-          {props => <Ama openAiKey={apiKey} />}
+          {props => <Ama openAiKey={OAIkey} jwtToken={jwt} />}
           </Stack.Screen>
 
           <Stack.Screen name="Code Wizard">
-          {props => <Code openAiKey={apiKey} />}
+          {props => <Code openAiKey={OAIkey} jwtToken={jwt} />}
           </Stack.Screen>
 
           <Stack.Screen name="Translate">
-          {props => <Translate openAiKey={apiKey} />}
+          {props => <Translate openAiKey={OAIkey} jwtToken={jwt} />}
           </Stack.Screen>
 
           <Stack.Screen name="Edit">
-          {props => <Edit openAiKey={apiKey} />}
+          {props => <Edit openAiKey={OAIkey} jwtToken={jwt} />}
           </Stack.Screen>
 
         </Stack.Navigator>

@@ -20,7 +20,19 @@ const RegisterScreen = (props) => {
         .then(userCredentials => {
             sendEmailVerification(userCredentials)
             const user = userCredentials.user;
-            console.log("Registered with email: ", user.email);
+            axios.post( props.regURL, {
+                email: user.email
+            }, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+                })
+            .then(response => {
+                console.log("Registration Successful: ", response.data)
+            })
+            .catch((e) => {
+                alert(e.message, e)
+            });
             toast.show("Registration Successful!", {
                 type: "success",
                 placement: "center",

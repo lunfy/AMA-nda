@@ -13,9 +13,16 @@ const LoginScreen = (props) => {
 
     const logo = require('../assets/ama-nda-resize.png')
 
+    const jwt = (token) => {
+        props.jwtToken(token)
+    }
+
     useEffect(() => {
       const unsubscribe = auth.onAuthStateChanged(user => {
         if (user) {
+            user.getIdToken().then(function(idToken) {  // <------ Check this line
+                jwt(idToken)
+             })
             navigation.replace("Home")
         }
       })

@@ -1,15 +1,13 @@
-import { ScrollView, View, TouchableOpacity, Image, StyleSheet, Text } from "react-native";
+import { ScrollView, View, StyleSheet, Text } from "react-native";
 import { useEffect, useState } from "react";
-import { Button, Card, Divider, Paragraph, Title } from "react-native-paper";
-import { DEV_REQUESTS } from '@env'
+import { Card, Paragraph, Title } from "react-native-paper";
 import axios from 'axios'
 
 const History = (props) => {
 
-    const img0 = require('../assets/150.png')
-    const REQ_URL = process.env.DEV_REQUESTS
     const user = props.userId
     const jwt = props.jwtToken
+    const reqURL = props.req
 
     let ReqCard = []
 
@@ -18,13 +16,12 @@ const History = (props) => {
     const getHistory = () => {
         axios({
             method: 'GET',
-            url: `${REQ_URL}?uid=${user}`,
+            url: `${reqURL}?uid=${user}`,
             headers: {
                 "Authorization":`${jwt}`
             }
         })
         .then(response => {
-            console.log("data: ", response.data)
             setReqData(response.data)
         })
         .catch((e) => {

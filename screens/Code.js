@@ -21,7 +21,7 @@ const Code = (props) => {
 
     let payload = {
         prompt: `Write a function in ${codeLang} for the following question:\n\n${userInput}`,
-        max_tokens: 512,
+        max_tokens: 2048,
         temperature: 0.5,
         n: 1,
         model: "text-davinci-002"

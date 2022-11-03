@@ -1,4 +1,4 @@
-import { useTheme, useNavigation } from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import { TextInput, Divider, ActivityIndicator, MD2Colors } from 'react-native-paper';
 import { useState } from 'react';
 import axios from 'axios';

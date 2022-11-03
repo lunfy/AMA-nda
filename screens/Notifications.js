@@ -1,15 +1,13 @@
 import * as React from 'react'
-import { ScrollView, View, TouchableOpacity, Image, StyleSheet, Text } from "react-native";
+import { ScrollView, StyleSheet, Text } from "react-native";
 import { useEffect, useState } from "react";
 import { Banner, BottomNavigation } from "react-native-paper";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { DEV_NOTIFICATIONS } from '@env'
 import axios from 'axios'
 
 const Notifications = (props) => {
 
     const img0 = require('../assets/150.png')
-    const REQ_NOTE = process.env.DEV_NOTIFICATIONS
+    const notURL = props.not
     const user = props.userId
     const jwt = props.jwtToken
 
@@ -51,7 +49,7 @@ const Notifications = (props) => {
     const getNotifications = () => {
         axios({
             method: 'GET',
-            url: `${REQ_NOTE}?uid=${user}`,
+            url: `${notURL}?uid=${user}`,
             headers: {
                 "Authorization":`${jwt}`
             }
@@ -95,28 +93,28 @@ const Notifications = (props) => {
         });
     } 
 
-    const deleteNotification = (nid) => {
-        axios({
-            method: 'DELETE',
-            url: `${REQ_NOTE}`,
-            headers: {
-                "Authorization":`${jwt}`
-            },
-            data: {
-                nid: `${nid}`
-            }
-        })
-        .then(response => {
-            console.log("data: ", response.data)
-            responseHandler(response)
-        })
-        .then(()=> {
-            getNotifications()
-        })
-        .catch((e) => {
-            alert(e.message, e)
-        });
-    }
+    // const deleteNotification = (nid) => {
+    //     axios({
+    //         method: 'DELETE',
+    //         url: `${REQ_NOTE}`,
+    //         headers: {
+    //             "Authorization":`${jwt}`
+    //         },
+    //         data: {
+    //             nid: `${nid}`
+    //         }
+    //     })
+    //     .then(response => {
+    //         console.log("data: ", response.data)
+    //         responseHandler(response)
+    //     })
+    //     .then(()=> {
+    //         getNotifications()
+    //     })
+    //     .catch((e) => {
+    //         alert(e.message, e)
+    //     });
+    // }
 
     const responseHandler = (res) => {
         if (res.status === 200) {

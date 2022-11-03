@@ -20,7 +20,7 @@ const MainMenu = (props) => {
 
     const verifiedUser = auth.currentUser.emailVerified
     console.log("jwt: ", props.mjwt)
-    console.log("uid: ", auth.currentUser.uid)
+    console.log("CU: ", auth.currentUser)
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
@@ -32,9 +32,9 @@ const MainMenu = (props) => {
 
     const LimitAccess = (props) => {
         return (
-            <View style={styles.item}>
-                <Card>
-                    <Card.Content>
+            <View style={{ width: '50%', padding: 10, backgroundColor: colors.background }}>
+                <Card style={{ backgroundColor: colors.border, borderRadius: 20 }}>
+                    <Card.Content style={{ backgroundColor: colors.border, borderRadius: 20 }}>
                         { verifiedUser ? (
                         <TouchableOpacity onPress={() => navigation.navigate(props.nav)}>
                             <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={props.imgSrc} />
@@ -50,20 +50,8 @@ const MainMenu = (props) => {
         )
     }
 
-    const Test = () => {
-        axios.post( 'http://127.0.0.1:5000/api/users/register', {
-            email: 'lunfy.aman@gmail.com'
-        }, {
-            headers: {
-                "Content-Type": "application/json"
-            }
-            })
-        .then(response => {
-            console.log("Registration Successful: ", response.data)
-        })
-        .catch((e) => {
-            alert(e.message, e)
-        });
+    const Test = (color) => {
+        props.theme(color)
     }
 
     return (
@@ -108,9 +96,9 @@ const MainMenu = (props) => {
             </View>
 
             <View style={styles.container}>
-                <View style={styles.item}>
-                    <Card>
-                        <Card.Content>
+                <View style={{ width: '50%', padding: 10, backgroundColor: colors.background }}>
+                    <Card style={{ backgroundColor: colors.border, borderRadius: 20 }}>
+                        <Card.Content style={{ backgroundColor: colors.border, borderRadius: 20 }}>
                             <TouchableOpacity onPress={() => navigation.navigate('Ask Me Anything!')}>
                                 <Image style={{ width: 130, height: 130, borderRadius: 100 }} source={img0} />
                             </TouchableOpacity>
@@ -121,7 +109,8 @@ const MainMenu = (props) => {
                 <LimitAccess nav='Code Wizard' imgSrc={img1} />
                 <LimitAccess nav='Translate' imgSrc={img2} />
                 <LimitAccess nav='Edit' imgSrc={img3} />
-                <Button onPress={Test}>Test</Button>
+                <Button onPress={() => {Test('dark')}}>Test</Button>
+                <Button onPress={() => {Test('')}}>Test2</Button>
             </View>
         </View>
     );

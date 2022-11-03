@@ -1,23 +1,21 @@
-import { useNavigation } from '@react-navigation/native';
-import { useTheme, TextInput, Divider, ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { useTheme, useNavigation } from '@react-navigation/native';
+import { TextInput, Divider, ActivityIndicator, MD2Colors } from 'react-native-paper';
 import { useState } from 'react';
 import axios from 'axios';
 import * as Clipboard from 'expo-clipboard';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView, View, Button, Text } from 'react-native';
+import { ScrollView, View, Button, Text, StyleSheet } from 'react-native';
+
 
 const Ama = (props) => {
-
-    const img = require('../assets/150.png')
-    const navigation = useNavigation()
 
     const { colors } = useTheme();
     const [userInput, setUserInput] = useState('')
     const [loading, setLoading] = useState(false)
     const [obj, setObj] = useState('')
-    const [copiedText, setCopiedText] = useState('')
 
-    console.log("uid: ", props.userId)
+    const jwt = props.jwtToken    
+    const uid = props.userId
+    const reqURL = props.req
 
     let payload = {
         prompt: `${userInput}`,
@@ -48,29 +46,84 @@ const Ama = (props) => {
             });
     }
     
-      const responseHandler = (res) => {
-        if (res.status === 200) {
-            const response = res.data.choices[0].text
-            setObj(response);
-            setLoading(false);
+    const responseHandler = (res) => {
+    if (res.status === 200) {
+        const response = res.data.choices[0].text.trim()
+        setObj(response);
+        setLoading(false);
+        storeData(reqURL, uid, userInput, response, jwt)
+    }
+    };
+
+    const storeData = (url, id, input, output, token) => {
+    axios({
+        method: 'POST',
+        url: `${url}`,
+        data: {
+            uid: `${id}`,
+            user_request: `${input}`,
+            ai_response: `${output}`
+        },
+        headers: {
+            "Authorization":`${token}`
         }
-      };
+    })
+    .then(response => {
+        console.log("data: ", response.data)
+    })
+    .catch((e) => {
+        alert(e.message, e)
+    });
+    }
 
-      const copyToClipboard = async () => {
-        await Clipboard.setStringAsync(obj)
-      }
+    const copyToClipboard = async () => {
+    await Clipboard.setStringAsync(obj)
+    }
 
-      const fetchCopiedText = async () => {
-            const test = await Clipboard.getStringAsync();
-            setCopiedText(test)
-      };
+    const styles = StyleSheet.create({
+        reqContainer: {
+            justifyContent: 'center', 
+            marginTop: 10, 
+            paddingHorizontal: 10, 
+            borderRadius: 10, 
+            backgroundColor: colors.card
+        },
+        inputText: { 
+            color: colors.text, 
+            paddingHorizontal: 10, 
+            marginTop: 20, 
+            marginBottom: 5
+        },
+        outputText: {
+            color: colors.text, 
+            paddingHorizontal: 10, 
+            marginBottom: 5
+        },
+        divider: {
+            marginVertical: 20, 
+            marginHorizontal: 5
+        },
+        loadContainer: {
+            alignItems: 'center', 
+            marginVertical: 10, 
+            backgroundColor: colors.card
+        },
+        outputContainer: {
+            flex: 1, backgroundColor: colors.border, 
+            borderWidth: 1, 
+            paddingHorizontal: 10, 
+            paddingVertical: 20, 
+            borderRadius: 10
+        },
+        text: {
+            color: colors.text
+        }
+    })
 
     return (
-        <SafeAreaView>
             <ScrollView>
-                <Text style={{ color: colors.text, paddingHorizontal: 10 }}>Input</Text>
-
-                <View style={{ justifyContent: 'center', paddingHorizontal: 10}}>
+                <View style={styles.reqContainer}>
+                <Text style={styles.inputText}>Input</Text>
                     <TextInput
                         multiline={true}
                         numberOfLines={4}
@@ -82,33 +135,31 @@ const Ama = (props) => {
                         />
                     <Button title='Submit' onPress={getRes} />
 
-                    <Divider style={{ marginVertical: 20, marginHorizontal: 5 }} bold='true' />
+                    <Divider style={styles.divider} bold='true' />
                     
                     { loading ? (
                     <>
                         <ActivityIndicator animating={true} color={MD2Colors.red800} />
-                        <View style={{ alignItems: 'center', marginVertical: 10}}>
-                            <Text>Loading....</Text>
+                        <View style={styles.loadContainer}>
+                            <Text style={styles.text}>Loading....</Text>
                         </View>
                     </>)
                         : <></> }   
                     
                     { obj ? (
                     <>
-                        <Text>Output</Text>
-                        <View style={{ flex: 1, backgroundColor: colors.card, borderWidth: 1, paddingHorizontal: 10, paddingBottom: 30 }}>
-                                <Text style={{ color: colors.text }}>
+                        <Text style={styles.outputText}>Output</Text>
+                        <View style={styles.outputContainer}>
+                                <Text style={styles.text}>
                                     {obj ? obj : ''}
                                 </Text>
                         </View>
-                        <Button style={{ color: colors.text }} title="Click here to copy to Clipboard" onPress={copyToClipboard} />
+                        <Button style={styles.text} title="Click here to copy to Clipboard" onPress={copyToClipboard} />
                     </>
                     ) : <></>
                 }
                 </View>
-        
             </ScrollView>
-        </SafeAreaView>
     );
 }
 

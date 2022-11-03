@@ -1,12 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, SafeAreaView, View, ImageBackground, Button } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { useTheme } from "@react-navigation/native";
 import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import { createDrawerNavigator,DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer'
 import { CustomDrawerContent, Notifications, About } from '../components/CustomDrawerContent'
 import MainMenu from './MainMenu';
+import { set } from 'react-native-reanimated'
   
   const Drawer = createDrawerNavigator();
   
@@ -26,13 +26,12 @@ import MainMenu from './MainMenu';
             }
         }}
         useLegacyImplementation
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        drawerContent={(props) => <CustomDrawerContent {...props} theme={setIt} />}
       >
         <Drawer.Screen name="Main Menu">
             {props => <MainMenu theme={setIt} bgImg={props.bgImg} mjwt={jwt} /> }
         </Drawer.Screen>
         <Drawer.Screen name="About" component={About} />
-        <Drawer.Screen name="Notifications" component={Notifications} />
       </Drawer.Navigator>
     );
   }

@@ -13,11 +13,14 @@ import Code from './screens/Code'
 import Translate from './screens/Translate';
 import Edit from './screens/Edit';
 import History from './screens/History'
+import Notifications from './screens/Notifications'
 import Toast from "react-native-toast-notifications";
-import { OPEN_API_KEY, DEV_USERS_REGISTER } from '@env'
+import { OPEN_API_KEY, DEV_USERS_REGISTER, DEV_USERS, DEV_REQUESTS } from '@env'
 
 const OAIkey = process.env.OPEN_API_KEY
 const regURL = process.env.DEV_USERS_REGISTER
+const signURL = process.env.DEV_USERS
+const reqURL = process.env.DEV_REQUESTS
 
 const Stack = createNativeStackNavigator();
 const image = require('./assets/RTH7GG6.jpeg')
@@ -35,7 +38,7 @@ export default function App() {
       <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack.Navigator>
           <Stack.Screen options={{ headerShown: false}} name="Login">
-          {props => <LoginScreen bgImg={image} jwtToken={setJwt} userId={setUid} />}
+          {props => <LoginScreen bgImg={image} jwtToken={setJwt} userId={setUid} signIn={signURL} />}
           </Stack.Screen>
 
           <Stack.Screen options={{ headerShown: false}} name="Home">
@@ -47,23 +50,27 @@ export default function App() {
           </Stack.Screen>
 
           <Stack.Screen name="Ask Me Anything!">
-          {props => <Ama openAiKey={OAIkey} jwtToken={jwt} userId={uid} />}
+          {props => <Ama openAiKey={OAIkey} jwtToken={jwt} userId={uid} req={reqURL} />}
           </Stack.Screen>
 
           <Stack.Screen name="Code Wizard">
-          {props => <Code openAiKey={OAIkey} jwtToken={jwt} userId={uid} />}
+          {props => <Code openAiKey={OAIkey} jwtToken={jwt} userId={uid} req={reqURL} />}
           </Stack.Screen>
 
           <Stack.Screen name="Translate">
-          {props => <Translate openAiKey={OAIkey} jwtToken={jwt} userId={uid} />}
+          {props => <Translate openAiKey={OAIkey} jwtToken={jwt} userId={uid} req={reqURL} />}
           </Stack.Screen>
 
           <Stack.Screen name="Edit">
-          {props => <Edit openAiKey={OAIkey} jwtToken={jwt} userId={uid} />}
+          {props => <Edit openAiKey={OAIkey} jwtToken={jwt} userId={uid} req={reqURL} />}
           </Stack.Screen>
 
           <Stack.Screen name="History">
           {props => <History jwtToken={jwt} userId={uid} />}
+          </Stack.Screen>
+
+          <Stack.Screen name="Notifications">
+          {props => <Notifications jwtToken={jwt} userId={uid} />}
           </Stack.Screen>
 
         </Stack.Navigator>

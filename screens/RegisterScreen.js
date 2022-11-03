@@ -4,12 +4,32 @@ import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from '../firebase'
+import axios from 'axios'
 
 const RegisterScreen = (props) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+
+    const regURL = props.reg
+
+    const registerUser = (url,id,em) => {
+        axios({
+            method: 'POST',
+            url: `${url}`,
+            data: {
+                uid: `${id}`,
+                email: `${em}`
+            }
+        })
+        .then(response => {
+            console.log("data: ", response.data)
+        })
+        .catch((e) => {
+            alert(e.message, e)
+        });
+    }
 
     const handleSignUp = () => {
         if (password !== confirmPassword) {
@@ -18,21 +38,10 @@ const RegisterScreen = (props) => {
 
         createUserWithEmailAndPassword(auth, email, password)
         .then(userCredentials => {
-            sendEmailVerification(userCredentials)
-            const user = userCredentials.user;
-            axios.post( props.regURL, {
-                email: user.email
-            }, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-                })
-            .then(response => {
-                console.log("Registration Successful: ", response.data)
-            })
-            .catch((e) => {
-                alert(e.message, e)
-            });
+            const user = userCredentials.user
+            const uid = user.uid
+            sendEmailVerification(user)
+            registerUser(regURL, uid, email)
             toast.show("Registration Successful!", {
                 type: "success",
                 placement: "center",
@@ -58,7 +67,7 @@ const RegisterScreen = (props) => {
                     animationType: "slide-in"
                 } );
             }
-            console.log(error);
+            console.log("????: ",error);
         })
     }
 

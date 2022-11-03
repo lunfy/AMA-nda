@@ -1,16 +1,11 @@
+import { useEffect, useState } from "react";
 import { DrawerContentScrollView, DrawerItemList, DrawerItem } from "@react-navigation/drawer";
 import { useTheme } from "@react-navigation/native";
 import { Linking, View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { auth } from '../firebase'
-
-const Notifications = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Notifications Screen</Text>
-    </View>
-  );
-}
+import { Switch, IconButton, MD3Colors } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 const About = () => {
   return (
@@ -28,7 +23,23 @@ const handleSignOut = () => {
     .catch(error => alert(error.message))
 }
 
-function CustomDrawerContent({ navigation }) {
+function CustomDrawerContent(props) {
+  
+  const navigation = useNavigation()
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const setTheme = (arg) => {
+    props.theme(arg)
+  }
+
+  useEffect(() => {
+    if (isSwitchOn === false) {
+      setTheme('')
+      return
+    }
+    setTheme('dark')
+  },[isSwitchOn])
+
   return (
           <DrawerContentScrollView>
             <DrawerItem
@@ -65,11 +76,23 @@ function CustomDrawerContent({ navigation }) {
               label="Sign Out"
               onPress={handleSignOut}
             />
+            <View style={{flex: 1, flexDirection: 'row', marginTop: 300,}}>
+              <View style={{ flex: 1}}>
+                <IconButton
+                icon="theme-light-dark"
+                iconColor={MD3Colors.error50}
+                size={70}
+              />
+              </View>
+              <View style={{ flex: 1, paddingTop: 35}}>
+                <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+              </View>
+            </View>
           </DrawerContentScrollView>
         );
   }
 
-  export { CustomDrawerContent, Notifications, About }
+  export { CustomDrawerContent, About }
 
   // <View style={{ justifyContent: 'center', alignItems: 'center' }}>
   //     <Button title='btn' onPress={()=>props.theme('dark')} />

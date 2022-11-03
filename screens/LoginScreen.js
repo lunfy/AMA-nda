@@ -3,6 +3,7 @@ import React, { useState,useEffect } from 'react';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../firebase'
+import axios from 'axios'
 
 const LoginScreen = (props) => {
 
@@ -12,6 +13,7 @@ const LoginScreen = (props) => {
     const navigation = useNavigation()
 
     const logo = require('../assets/ama-nda-resize.png')
+    const signURL = props.signIn
 
     const setJwtUid = (token,id) => {
         props.jwtToken(token)
@@ -38,11 +40,31 @@ const LoginScreen = (props) => {
         navigation.navigate('Register')
     }
 
+    const updateSignIn = (url,id,jwt) => {
+        axios({
+            method: 'POST',
+            url: `${url}`,
+            data: {
+                uid: `${id}`
+            },
+            headers: {
+                "Authorization":`${jwt}`
+            }
+        })
+        .then(response => {
+            console.log("data: ", response.data)
+        })
+        .catch((e) => {
+            alert(e.message, e)
+        });
+    }
+
     const handleSignIn = () => {
         signInWithEmailAndPassword(auth, email, password)
         .then(userCredentials => {
             const user = userCredentials.user;
             console.log("Logged in with email: ", user.email);
+            updateSignIn(signURL,user.uid,user.accessToken)
             toast.show("Login Successful!", {
                 type: "success",
                 placement: "center",

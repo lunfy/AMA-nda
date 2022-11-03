@@ -15,6 +15,10 @@ const Code = (props) => {
     const [obj, setObj] = useState('')
     const [codeLang, setCodeLang] = useState('')
 
+    const jwt = props.jwtToken    
+    const uid = props.userId
+    const reqURL = props.req
+
     let payload = {
         prompt: `Write a function in ${codeLang} for the following question:\n\n${userInput}`,
         max_tokens: 512,
@@ -49,11 +53,33 @@ const Code = (props) => {
     
       const responseHandler = (res) => {
         if (res.status === 200) {
-            const response = res.data.choices[0].text
+            const response = res.data.choices[0].text.trim()
             setObj(response);
             setLoading(false);
+            storeData(reqURL, uid, userInput, response, jwt)
         }
       };
+
+      const storeData = (url, id, input, output, token) => {
+        axios({
+            method: 'POST',
+            url: `${url}`,
+            data: {
+                uid: `${id}`,
+                user_request: `${input}`,
+                ai_response: `${output}`
+            },
+            headers: {
+                "Authorization":`${token}`
+            }
+        })
+        .then(response => {
+            console.log("data: ", response.data)
+        })
+        .catch((e) => {
+            alert(e.message, e)
+        });
+        }
 
       const copyToClipboard = async () => {
         await Clipboard.setStringAsync(obj)

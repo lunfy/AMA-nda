@@ -14,6 +14,10 @@ const Translate = (props) => {
     const [loading, setLoading] = useState(false)
     const [obj, setObj] = useState('')
 
+    const jwt = props.jwtToken    
+    const uid = props.userId
+    const reqURL = props.req
+
     let payload = {
         prompt: `Translate the text provided from ${langInput} to ${reqOutput}: \n\n${userInput}`,
         max_tokens: 512,
@@ -45,12 +49,34 @@ const Translate = (props) => {
                 alert(e.message, e)
             });
     }
+
+    const storeData = (url, id, input, output, token) => {
+        axios({
+            method: 'POST',
+            url: `${url}`,
+            data: {
+                uid: `${id}`,
+                user_request: `${input}`,
+                ai_response: `${output}`
+            },
+            headers: {
+                "Authorization":`${token}`
+            }
+        })
+        .then(response => {
+            console.log("data: ", response.data)
+        })
+        .catch((e) => {
+            alert(e.message, e)
+        });
+        }
     
     const responseHandler = (res) => {
     if (res.status === 200) {
         const response = res.data.choices[0].text.trim()
         setObj(response);
         setLoading(false);
+        storeData(reqURL, uid, userInput, response, jwt)
     }
     };
 

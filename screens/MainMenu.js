@@ -20,7 +20,6 @@ const MainMenu = (props) => {
 
     const verifiedUser = auth.currentUser.emailVerified
     console.log("jwt: ", props.mjwt)
-    console.log("CU: ", auth.currentUser)
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
@@ -109,8 +108,6 @@ const MainMenu = (props) => {
                 <LimitAccess nav='Code Wizard' imgSrc={img1} />
                 <LimitAccess nav='Translate' imgSrc={img2} />
                 <LimitAccess nav='Edit' imgSrc={img3} />
-                <Button onPress={() => {Test('dark')}}>Test</Button>
-                <Button onPress={() => {Test('')}}>Test2</Button>
             </View>
         </View>
     );

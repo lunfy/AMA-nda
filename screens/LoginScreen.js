@@ -40,12 +40,13 @@ const LoginScreen = (props) => {
         navigation.navigate('Register')
     }
 
-    const updateSignIn = (url,id,jwt) => {
+    const updateSignIn = (url,id,em,jwt) => {
         axios({
             method: 'POST',
             url: `${url}`,
             data: {
-                uid: `${id}`
+                uid: `${id}`,
+                email: `${em}`
             },
             headers: {
                 "Authorization":`${jwt}`
@@ -64,7 +65,7 @@ const LoginScreen = (props) => {
         .then(userCredentials => {
             const user = userCredentials.user;
             console.log("Logged in with email: ", user.email);
-            updateSignIn(signURL,user.uid,user.accessToken)
+            updateSignIn(signURL,user.uid,user.email,user.accessToken)
             toast.show("Login Successful!", {
                 type: "success",
                 placement: "center",
@@ -72,6 +73,9 @@ const LoginScreen = (props) => {
                 animationType: "slide-in"
             })
         })
+        .catch((e) => {
+            alert(e.message, e)
+        });
     }
 
   return (

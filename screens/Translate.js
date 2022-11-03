@@ -1,15 +1,11 @@
-import { useNavigation } from '@react-navigation/native';
-import { useTheme, TextInput, Divider, ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { useTheme } from '@react-navigation/native';
+import { TextInput, Divider, ActivityIndicator, MD2Colors } from 'react-native-paper';
 import { useState } from 'react';
 import axios from 'axios';
 import * as Clipboard from 'expo-clipboard';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView, View, Button, Text } from 'react-native';
+import { ScrollView, View, Button, Text, StyleSheet } from 'react-native';
 
 const Translate = (props) => {
-
-    const img = require('../assets/150.png')
-    const navigation = useNavigation()
 
     const { colors } = useTheme();
     const [langInput, setLangInput] = useState('')
@@ -17,7 +13,6 @@ const Translate = (props) => {
     const [userInput, setUserInput] = useState('')
     const [loading, setLoading] = useState(false)
     const [obj, setObj] = useState('')
-    const [copiedText, setCopiedText] = useState('')
 
     let payload = {
         prompt: `Translate the text provided from ${langInput} to ${reqOutput}: \n\n${userInput}`,
@@ -51,105 +46,140 @@ const Translate = (props) => {
             });
     }
     
-      const responseHandler = (res) => {
-        if (res.status === 200) {
-            const response = res.data.choices[0].text
-            setObj(response);
-            setLoading(false);
-        }
-      };
+    const responseHandler = (res) => {
+    if (res.status === 200) {
+        const response = res.data.choices[0].text.trim()
+        setObj(response);
+        setLoading(false);
+    }
+    };
 
-      const copyToClipboard = async () => {
+    const copyToClipboard = async () => {
         await Clipboard.setStringAsync(obj)
-      }
+    }
 
-      const fetchCopiedText = async () => {
-            const test = await Clipboard.getStringAsync();
-            setCopiedText(test)
-      };
+    const styles = StyleSheet.create({
+        reqContainer: {
+            justifyContent: 'center', 
+            marginTop: 10, 
+            paddingHorizontal: 10, 
+            borderRadius: 10, 
+            backgroundColor: colors.card
+        },
+        input: {
+            marginHorizontal: 5, 
+            width: '30%'
+        },
+        inputSentence: {
+            flex: 1, 
+            flexDirection: 'row', 
+            paddingHorizontal: 10,
+            marginBottom: 20,
+            marginTop: 20
+        },
+        outputText: {
+            color: colors.text, 
+            paddingHorizontal: 10, 
+            marginBottom: 5
+        },
+        divider: {
+            marginVertical: 20, 
+            marginHorizontal: 5
+        },
+        loadContainer: {
+            alignItems: 'center', 
+            marginVertical: 10, 
+            backgroundColor: colors.card
+        },
+        outputContainer: {
+            flex: 1, backgroundColor: colors.border, 
+            borderWidth: 1, 
+            paddingHorizontal: 10, 
+            paddingVertical: 20, 
+            borderRadius: 10
+        },
+        inputText: {
+            paddingTop: 15
+        },
+        text: {
+            color: colors.text
+        }
+    })
 
     return (
-        <SafeAreaView>
-            <ScrollView>
-                <View style={{ paddingBottom: 10, justifyContent: 'center', alignItems: 'center' }}>
-                    {/* <Button title='btn' onPress={()=>props.theme('dark')} />
-                    <Button title='btn2' onPress={()=>props.theme('light')} /> */}
-                </View>
-
-                <View style={{ justifyContent: 'center', paddingHorizontal: 10}}>
-
-                    <View style={{ flex: 1, flexDirection: 'row', marginBottom: 20 }}>
-                        <View style={{ paddingTop: 15}}>
-                            <Text>Translate from</Text>
-                        </View>
-                        <View style={{ marginHorizontal: 5, width: '30%' }}>
-                            <TextInput
-                            placeholder='Language'
-                            mode='outlined'
-                            value={langInput}
-                            style={{ height: 25}}
-                            onChangeText={(text) => {
-                                setLangInput(text)
-                            }}
-                            />
-                        </View>
-                        <View style={{ paddingTop: 15}}>
-                            <Text>to</Text>
-                        </View>
-                        <View style={{ marginHorizontal: 5, width: '30%' }}>
-                            <TextInput
-                            placeholder='Language'
-                            mode='outlined'
-                            value={reqOutput}
-                            style={{ height: 25}}
-                            onChangeText={(text) => {
-                                setReqOutput(text)
-                            }}
-                            />
-                        </View>
-                        <View style={{ paddingTop: 15}}>
-                            <Text>:</Text>
-                        </View>
+        <ScrollView>
+            <View style={styles.reqContainer}>
+                <View style={styles.inputSentence}>
+                    <View style={styles.inputText}>
+                        <Text style={styles.text}>Translate from</Text>
                     </View>
-
-                    <TextInput
-                    multiline={true}
-                    numberOfLines={4}
-                    onChangeText={(text) => {
-                        setUserInput(text)
-                    }}
-                    value={userInput}
-                    label="Input text here to translate"
-                    />
-                    <Button title='Submit' onPress={getRes} />
-
-                    <Divider style={{ marginVertical: 20, marginHorizontal: 5 }} bold='true' />
-                    
-                    { loading ? (
-                    <>
-                        <ActivityIndicator animating={true} color={MD2Colors.red800} />
-                        <View style={{ alignItems: 'center', marginVertical: 10}}>
-                            <Text>Loading....</Text>
-                        </View>
-                    </>)
-                        : <></> }   
-
-                    { obj ? (
-                    <>
-                        <Text>Output</Text>
-                        <View style={{ flex: 1, backgroundColor: colors.card, borderWidth: 1, paddingHorizontal: 10, paddingBottom: 30 }}>
-                                <Text style={{ color: colors.text }}>
-                                    {obj ? obj : ''}
-                                </Text>
-                        </View>
-                        <Button style={{ color: colors.text }} title="Click here to copy to Clipboard" onPress={copyToClipboard} />
-                    </>
-                    ) : <></>
-                }
+                    <View style={styles.input}>
+                        <TextInput
+                        placeholder='Language'
+                        mode='outlined'
+                        value={langInput}
+                        style={{ height: 25}}
+                        onChangeText={(text) => {
+                            setLangInput(text)
+                        }}
+                        />
+                    </View>
+                    <View style={styles.inputText}>
+                        <Text style={styles.text}>to</Text>
+                    </View>
+                    <View style={styles.input}>
+                        <TextInput
+                        placeholder='Language'
+                        mode='outlined'
+                        value={reqOutput}
+                        style={{ height: 25}}
+                        onChangeText={(text) => {
+                            setReqOutput(text)
+                        }}
+                        />
+                    </View>
+                    <View style={styles.inputText}>
+                        <Text style={styles.text}>:</Text>
+                    </View>
                 </View>
-        
-            </ScrollView>
-        </SafeAreaView>
+
+                <TextInput
+                multiline={true}
+                numberOfLines={4}
+                onChangeText={(text) => {
+                    setUserInput(text)
+                }}
+                value={userInput}
+                label="Input text here to translate"
+                />
+                <Button title='Submit' onPress={getRes} />
+
+                <Divider style={styles.divider} bold='true' />
+                
+                { loading ? (
+                <>
+                    <ActivityIndicator animating={true} color={MD2Colors.red800} />
+                    <View style={styles.loadContainer}>
+                        <Text style={styles.text}>Loading....</Text>
+                    </View>
+                </>)
+                    : <></> }   
+
+                { obj ? (
+                <>
+                    <Text style={styles.outputText}>Output</Text>
+                    <View style={styles.outputContainer}>
+                            <Text style={styles.text}>
+                                {obj ? obj : ''}
+                            </Text>
+                    </View>
+                    <Button title="Click here to copy to Clipboard" onPress={copyToClipboard} />
+                </>
+                ) : <></>
+            }
+            </View>
+    
+        </ScrollView>
     );
 }
 

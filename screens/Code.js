@@ -162,7 +162,7 @@ const Code = (props) => {
                                     {obj ? obj : ''}
                                 </Text>
                             </View>
-                            <Button style={{ color: colors.text }} title="Click here to copy to Clipboard" onPress={copyToClipboard} />
+                            <Button title="Click here to copy to Clipboard" onPress={copyToClipboard} />
                         </>
                     ) 
                     : <></>

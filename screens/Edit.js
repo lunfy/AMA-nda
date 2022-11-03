@@ -1,10 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
-import { useTheme, TextInput, Divider, ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { useNavigation, useTheme } from '@react-navigation/native';
+import { TextInput, Divider, ActivityIndicator, MD2Colors } from 'react-native-paper';
 import { useState } from 'react';
 import axios from 'axios';
 import * as Clipboard from 'expo-clipboard';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView, View, Button, Text } from 'react-native';
+import { ScrollView, View, Button, Text, StyleSheet } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown'
 
 const Edit = (props) => {
@@ -16,7 +16,6 @@ const Edit = (props) => {
     const [userInput, setUserInput] = useState('')
     const [loading, setLoading] = useState(false)
     const [obj, setObj] = useState('')
-    const [copiedText, setCopiedText] = useState('')
     const [langTool, setLangTool] = useState('')
 
     const [citeMode, setCiteMode] = useState(false)
@@ -92,101 +91,147 @@ const Edit = (props) => {
         }
         setLangTool(item)
     }
+
+    const styles = StyleSheet.create({
+        reqContainer: {
+            justifyContent: 'center', 
+            marginTop: 10, 
+            paddingHorizontal: 10, 
+            borderRadius: 10, 
+            backgroundColor: colors.card
+        },
+        modal: {
+            backgroundColor: colors.primary, 
+            paddingTop: 1, 
+            paddingHorizontal: 3, 
+            marginHorizontal: 5, 
+            borderWidth: 1
+        },
+        inputSentence: {
+            flex: 1, 
+            flexDirection: 'row', 
+            paddingHorizontal: 10,
+            marginBottom: 20,
+            marginTop: 20
+        },
+        outputText: {
+            color: colors.text, 
+            paddingHorizontal: 10, 
+            marginBottom: 5
+        },
+        divider: {
+            marginVertical: 20, 
+            marginHorizontal: 5
+        },
+        loadContainer: {
+            alignItems: 'center', 
+            marginVertical: 10, 
+            backgroundColor: colors.card
+        },
+        outputContainer: {
+            flex: 1, backgroundColor: colors.border, 
+            borderWidth: 1, 
+            paddingHorizontal: 10, 
+            paddingVertical: 20, 
+            borderRadius: 10
+        },
+        text: {
+            color: colors.text
+        }
+    })
     
     return (
         <>
         { citeMode ? 
         (<>
-            <SafeAreaView>
-                <ScrollView>
-                    <View style={{ justifyContent: 'center', paddingHorizontal: 10}}>
-                        <View style={{ flex: 1, flexDirection: 'row', marginBottom: 20 }}>
-                        <Text>Provide</Text>
-                            <View style={{ paddingTop: 1, paddingHorizontal: 3, marginHorizontal: 5, borderWidth: 1 }}>
-                                <ModalDropdown 
-                                defaultValue='APA Citation'
-                                options={[
-                                    'Proofread',
-                                    'Summarise',
-                                    'APA Citation',
-                                    'Reword'
-                                ]}
-                                onSelect={(ind, val) => citationModeCheck(val)}
-                                />
-                            </View>
-                            <Text>for the content below:</Text>
+            <ScrollView>
+                <View style={styles.reqContainer}>
+                    <View style={styles.inputSentence}>
+                    <Text>Provide</Text>
+                        <View style={{ paddingTop: 1, paddingHorizontal: 3, marginHorizontal: 5, borderWidth: 1 }}>
+                            <ModalDropdown 
+                            defaultValue='APA Citation'
+                            options={[
+                                'Proofread',
+                                'Summarise',
+                                'APA Citation',
+                                'Reword'
+                            ]}
+                            onSelect={(ind, val) => citationModeCheck(val)}
+                            />
                         </View>
-                        
-                        <Text>Title:</Text>
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={4}
-                            onChangeText={(text) => {
-                                setCiteTitle(text)
-                            }}
-                            value={citeTitle}
-                            label="Title"
-                            />
-                        
-                        <Text>Author(s):</Text>
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={4}
-                            onChangeText={(text) => {
-                                setCiteAuthor(text)
-                            }}
-                            value={citeAuthor}
-                            label="Author(s) name, initials"
-                            />
-                        
-                        <Text>Year:</Text>
-                        <TextInput
-                            onChangeText={(text) => {
-                                setCiteYear(text)
-                            }}
-                            value={citeYear}
-                            label="Year of publication"
-                            />
-
-                        <Text>Excerpt:</Text>
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={4}
-                            onChangeText={(text) => {
-                                setUserInput(text)
-                            }}
-                            value={userInput}
-                            label="Input paragraphs/sentences here"
-                            />
-                        <Button title='Submit' onPress={getRes} />
-
-                        <Divider style={{ marginVertical: 20, marginHorizontal: 5 }} bold='true' />
-                        
-                        { loading ? (
-                        <>
-                            <ActivityIndicator animating={true} color={MD2Colors.red800} />
-                            <View style={{ alignItems: 'center', marginVertical: 10}}>
-                                <Text>Loading....</Text>
-                            </View>
-                        </>)
-                            : <></> }   
-
-                        { obj ? (
-                        <>
-                            <Text>Output</Text>
-                            <View style={{ flex: 1, backgroundColor: colors.card, borderWidth: 1, paddingHorizontal: 10, paddingBottom: 30 }}>
-                                    <Text style={{ color: colors.text }}>
-                                        {obj ? obj : ''}
-                                    </Text>
-                            </View>
-                            <Button style={{ color: colors.text }} title="Click here to copy to Clipboard" onPress={copyToClipboard} />
-                        </>
-                        ) : <></>
-                    }
+                        <Text>for the content below:</Text>
                     </View>
-            
-                </ScrollView>
-            </SafeAreaView>
+                    
+                    <Text>Title:</Text>
+                    <TextInput
+                        multiline={true}
+                        numberOfLines={4}
+                        onChangeText={(text) => {
+                            setCiteTitle(text)
+                        }}
+                        value={citeTitle}
+                        label="Title"
+                        />
+                    
+                    <Text>Author(s):</Text>
+                    <TextInput
+                        multiline={true}
+                        numberOfLines={4}
+                        onChangeText={(text) => {
+                            setCiteAuthor(text)
+                        }}
+                        value={citeAuthor}
+                        label="Author(s) name, initials"
+                        />
+                    
+                    <Text>Year:</Text>
+                    <TextInput
+                        onChangeText={(text) => {
+                            setCiteYear(text)
+                        }}
+                        value={citeYear}
+                        label="Year of publication"
+                        />
+
+                    <Text>Excerpt:</Text>
+                    <TextInput
+                        multiline={true}
+                        numberOfLines={4}
+                        onChangeText={(text) => {
+                            setUserInput(text)
+                        }}
+                        value={userInput}
+                        label="Input paragraphs/sentences here"
+                        />
+                    <Button title='Submit' onPress={getRes} />
+
+                    <Divider style={{ marginVertical: 20, marginHorizontal: 5 }} bold='true' />
+                    
+                    { loading ? (
+                    <>
+                        <ActivityIndicator animating={true} color={MD2Colors.red800} />
+                        <View style={{ alignItems: 'center', marginVertical: 10}}>
+                            <Text>Loading....</Text>
+                        </View>
+                    </>)
+                        : <></> }   
+
+                    { obj ? (
+                    <>
+                        <Text>Output</Text>
+                        <View style={{ flex: 1, backgroundColor: colors.card, borderWidth: 1, paddingHorizontal: 10, paddingBottom: 30 }}>
+                                <Text style={{ color: colors.text }}>
+                                    {obj ? obj : ''}
+                                </Text>
+                        </View>
+                        <Button style={{ color: colors.text }} title="Click here to copy to Clipboard" onPress={copyToClipboard} />
+                    </>
+                    ) : <></>
+                }
+                </View>
+        
+            </ScrollView>
         </>)
         : (<><SafeAreaView>
             <ScrollView>

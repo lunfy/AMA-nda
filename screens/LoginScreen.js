@@ -26,7 +26,7 @@ const LoginScreen = (props) => {
         if (user) {
             const uid = auth.currentUser.uid
             user.getIdToken()
-            .then((idToken) => {  // <------ Check this line
+            .then((idToken) => {
                 setJwtUid(idToken,uid)
              })
             navigation.replace("Home")

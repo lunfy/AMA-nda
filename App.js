@@ -15,12 +15,13 @@ import Edit from './screens/Edit';
 import History from './screens/History'
 import Notifications from './screens/Notifications'
 import Toast from "react-native-toast-notifications";
-import { OPEN_API_KEY, DEV_USERS_REGISTER, DEV_USERS, DEV_REQUESTS } from '@env'
+import { OPEN_API_KEY, PROD_USERS_REGISTER, PROD_USERS, PROD_REQUESTS, PROD_NOTIFICATIONS } from '@env'
 
 const OAIkey = process.env.OPEN_API_KEY
-const regURL = process.env.DEV_USERS_REGISTER
-const signURL = process.env.DEV_USERS
-const reqURL = process.env.DEV_REQUESTS
+const regURL = process.env.PROD_USERS_REGISTER
+const signURL = process.env.PROD_USERS
+const reqURL = process.env.PROD_REQUESTS
+const notURL = process.env.PROD_NOTIFICATIONS
 
 const Stack = createNativeStackNavigator();
 const image = require('./assets/RTH7GG6.jpeg')
@@ -66,11 +67,11 @@ export default function App() {
           </Stack.Screen>
 
           <Stack.Screen name="History">
-          {props => <History jwtToken={jwt} userId={uid} />}
+          {props => <History jwtToken={jwt} userId={uid} req={reqURL} />}
           </Stack.Screen>
 
           <Stack.Screen name="Notifications">
-          {props => <Notifications jwtToken={jwt} userId={uid} />}
+          {props => <Notifications jwtToken={jwt} userId={uid} not={notURL} />}
           </Stack.Screen>
 
         </Stack.Navigator>

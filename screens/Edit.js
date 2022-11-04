@@ -1,9 +1,8 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import { TextInput, Divider, ActivityIndicator, MD2Colors } from 'react-native-paper';
 import { useState } from 'react';
 import axios from 'axios';
 import * as Clipboard from 'expo-clipboard';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, View, Button, Text, StyleSheet } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown'
 

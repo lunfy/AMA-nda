@@ -3,6 +3,10 @@
 
 A React Native iOS application that allows users to interact with an AI endpoint for text-based requests.
 
+When I began this project, the intent was to push myself and work with as much new stuff as I can. I admit there are definitely better and more elegant solutions than what I've done, but this project encompasses the spirit of learning as much as I can in a short time, to see how well I adapt to so many unknowns.
+<br><br>
+My learnings in summary: React-Native, Expo-Go, React-Native & Expo-Go compatible libraries, NOT using an ORM in Flask, OpenAI, Firebase, Docker, AWS Lightsail are the main takeaways....
+
 <br>
 
 ## Authors
@@ -36,6 +40,16 @@ A React Native iOS application that allows users to interact with an AI endpoint
 - Notifications
 - react-native-paper
 - react-navigation/native-stack
+
+<br>
+
+## Deployment
+
+1. Deployment of React Native iOS requires an Apple Developer Subscription, hence the limitation of this product preview via Expo GO local network. I may consider subscribing after this just to test out the deployment process to App Store (of course, with monetized banner ads :p)
+
+2. Used **Docker** to create an image of **Flask server** (this took 2 hours to rectify compiler and package issues). Ran image on local container to test.
+
+3. Once successful and stable, created a container service on **AWS Lightsail**, an Amazon VPS service. Pushed stable image to active container.
 
 <br>
 

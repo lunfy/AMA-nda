@@ -32,7 +32,7 @@ A React Native iOS application that allows users to interact with an AI endpoint
 #### 1) Post registration details
 
 ```http
-  POST /api/registration
+  POST /api/users/register
 ```
 
 | Parameter | Type     | Description                |

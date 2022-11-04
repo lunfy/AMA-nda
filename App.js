@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { AppRegistry, StyleSheet, useColorScheme } from 'react-native';
 import { name as appName } from './app.json'
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -43,7 +43,7 @@ export default function App() {
           </Stack.Screen>
 
           <Stack.Screen options={{ headerShown: false}} name="Home">
-          {props => <HomeScreen bgImg={image} theme={setTheTheme} jwtToken={jwt} />}
+          {props => <HomeScreen bgImg={image} theme={setTheTheme} jwtToken={jwt} req={reqURL} not={notURL} userId={uid} />}
           </Stack.Screen>
 
           <Stack.Screen name="Register">
@@ -66,13 +66,13 @@ export default function App() {
           {props => <Edit openAiKey={OAIkey} jwtToken={jwt} userId={uid} req={reqURL} />}
           </Stack.Screen>
 
-          <Stack.Screen name="History">
+          {/* <Stack.Screen name="History">
           {props => <History jwtToken={jwt} userId={uid} req={reqURL} />}
-          </Stack.Screen>
+          </Stack.Screen> */}
 
-          <Stack.Screen name="Notifications">
+          {/* <Stack.Screen name="Notifications">
           {props => <Notifications jwtToken={jwt} userId={uid} not={notURL} />}
-          </Stack.Screen>
+          </Stack.Screen> */}
 
         </Stack.Navigator>
       </NavigationContainer>

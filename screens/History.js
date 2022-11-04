@@ -1,6 +1,6 @@
-import { ScrollView, View, StyleSheet, Text } from "react-native";
+import { ScrollView, View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
-import { Card, Paragraph, Title } from "react-native-paper";
+import { Modal, Portal, Card, Paragraph, Title } from "react-native-paper";
 import axios from 'axios'
 
 const History = (props) => {
@@ -12,6 +12,19 @@ const History = (props) => {
     let ReqCard = []
 
     const [reqData, setReqData] = useState('')
+    const [modalData, setModalData] = useState('')
+    const [visible, setVisible] = useState(false)
+
+    const containerStyle = {backgroundColor: 'white', padding: 20};
+
+    const showModal = (item) => {
+        setModalData(item)
+        setVisible(true)
+    }
+    const hideModal = () => {
+        setModalData('')
+        setVisible(false)
+    }
 
     const getHistory = () => {
         axios({
@@ -33,14 +46,18 @@ const History = (props) => {
         getHistory()
     }, [])
 
+
+
     if (reqData) {
         ReqCard = reqData.map((req, ind) =>
         <View style={styles.item} key={req.request_id}>
             <Card>
                 <Card.Content>
+                    <TouchableOpacity onPress={() => showModal(req)} >
                     <Title>Request #{ind+1}</Title>
                     <Paragraph style={styles.text}>Date: {req.req_date}</Paragraph>
                     <Paragraph style={styles.text}>Time: {req.req_time}</Paragraph>
+                    </TouchableOpacity>
                 </Card.Content>
             </Card>
         </View>
@@ -49,6 +66,32 @@ const History = (props) => {
 
     return (
         <ScrollView style={{ flex: 1 }}>
+            { modalData ?
+            (<Portal>
+                <Modal style={{ paddingTop: 80, marginLeft: 40, width: '80%', height: '80%' }} visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                    <ScrollView>
+                        <Title style={styles.boldText}>Request ID: {modalData.request_id}</Title>
+                        <Paragraph>
+                            <Text style={styles.boldText}>Date: </Text><Text>{modalData.req_date}</Text>
+                        </Paragraph>
+                        <Paragraph>
+                            <Text style={styles.boldText}>Time: </Text><Text>{modalData.req_time}</Text>
+                        </Paragraph>
+                        <Text></Text>
+                        <Paragraph>
+                            <Text style={styles.boldText}>Your Request: </Text>
+                        </Paragraph>
+                        <Paragraph><Text>{modalData.user_request}</Text></Paragraph>
+                        <Text></Text>
+                        <Paragraph>
+                            <Text style={styles.boldText}>AI Response: </Text>
+                        </Paragraph>
+                        <Paragraph><Text>{modalData.ai_response}</Text></Paragraph>
+                    </ScrollView>
+                </Modal>
+            </Portal>)
+
+            : (<></>) }
             <View style={styles.container}>
                 {ReqCard}
                 { reqData ? (<></>) : 
@@ -77,5 +120,8 @@ const History = (props) => {
     },
     text: {
         fontSize: 10
+    },
+    boldText: {
+        fontWeight: 'bold'
     }
   })

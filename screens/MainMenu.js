@@ -5,7 +5,6 @@ import { Card, Banner, Button, Paragraph, Dialog, Portal, } from "react-native-p
 import { auth } from "../firebase"
 import { sendEmailVerification } from "firebase/auth/react-native";
 import logo from '../assets/logo_black.png'
-import axios from 'axios'
 
 const MainMenu = (props) => {
 
@@ -47,10 +46,6 @@ const MainMenu = (props) => {
                 </Card>
             </View>
         )
-    }
-
-    const Test = (color) => {
-        props.theme(color)
     }
 
     return (

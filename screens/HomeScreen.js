@@ -2,46 +2,15 @@ import { StyleSheet, Text, TouchableOpacity, SafeAreaView, View, ImageBackground
 import React, { useState, useEffect } from 'react'
 import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
-import axios from 'axios'
-import { createDrawerNavigator,DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer'
-import { CustomDrawerContent, Notifications, About } from '../components/CustomDrawerContent'
-import MainMenu from './MainMenu';
-import { set } from 'react-native-reanimated'
-  
-  const Drawer = createDrawerNavigator();
-  
-  const MyDrawer = (props) => {
-
-    const setIt = (param) => {
-        props.theme(param)
-    }
-
-    const jwt = props.jwtToken
-
-    return (
-      <Drawer.Navigator
-        screenOptions={{
-            drawerStyle: {
-                width: 200
-            }
-        }}
-        useLegacyImplementation
-        drawerContent={(props) => <CustomDrawerContent {...props} theme={setIt} />}
-      >
-        <Drawer.Screen name="Main Menu">
-            {props => <MainMenu theme={setIt} bgImg={props.bgImg} mjwt={jwt} /> }
-        </Drawer.Screen>
-        <Drawer.Screen name="About" component={About} />
-      </Drawer.Navigator>
-    );
-  }
-  
-
+import MyDrawer from '../components/MyDrawer'
    
-export default function HomeScreen(props) {
+export default HomeScreen = (props) => {
 
     const navigation = useNavigation()
     const jwt = props.jwtToken
+    const uid = props.userId
+    const reqURL = props.req
+    const notURL = props.not
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -55,10 +24,10 @@ export default function HomeScreen(props) {
 
   return (
     <>
-        <MyDrawer theme={props.theme} jwtToken={jwt}/>  
+        <MyDrawer theme={props.theme} jwtToken={jwt} userId={uid} req={reqURL} not={notURL} />  
     </>
   )
-    }
+}
 
 const styles = StyleSheet.create({
     container: {

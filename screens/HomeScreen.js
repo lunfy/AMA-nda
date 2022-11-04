@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, SafeAreaView, View, ImageBackground, Button } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { StyleSheet } from 'react-native'
+import React, { useEffect } from 'react'
 import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
 import MyDrawer from '../components/MyDrawer'

@@ -19,9 +19,23 @@ A React Native iOS application that allows users to interact with an AI endpoint
 
 **Database:** ElephantSQL (PostgreSQL)
 
+**[ERD Diagram Here](https://github.com/lunfy/AMA-nda/blob/dev/assets/ERD.png?raw=true)**
+
 **Backend Hosting:** AWS Lightsail
 
 **User Auth Service:** Firebase
+
+<br>
+
+## Features
+
+- User creation and email verification
+- Light/dark mode toggle
+- 4 types of AI request structure
+- Usage history
+- Notifications
+- react-native-paper
+- react-navigation/native-stack
 
 <br>
 

@@ -3,10 +3,12 @@ import { ScrollView, StyleSheet, Text } from "react-native";
 import { useEffect, useState } from "react";
 import { Banner, BottomNavigation } from "react-native-paper";
 import axios from 'axios'
+import { useTheme } from '@react-navigation/native';
 
 const Notifications = (props) => {
 
-    const img0 = require('../assets/150.png')
+    const { colors } = useTheme()
+
     const notURL = props.not
     const user = props.userId
     const jwt = props.jwtToken
@@ -21,22 +23,47 @@ const Notifications = (props) => {
         { key: 'archived', title: 'Archived', focusedIcon: 'folder' }
     ]);
 
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'flex-start',
+            padding: 10,
+            backgroundColor: colors.background
+        },
+        view: {
+            flex: 1, 
+            paddingTop: 20,
+            backgroundColor: colors.background
+        },
+        banner: {
+            marginBottom: 10, 
+            marginHorizontal: 10, 
+            borderRadius: 20,
+            backgroundColor: colors.card
+        },
+        text: {
+            color: colors.text
+        }
+      })
+
     const NewRoute = () => 
-    <ScrollView style={{ flex: 1, paddingTop: 10 }}>
+    <ScrollView style={styles.view}>
         {noteBanners}
             { noteData ? (<></>) : 
                 (
-                    <Text>You have no new notifications</Text>
+                    <Text style={styles.text}>You have no new notifications</Text>
                 )
             }
     </ScrollView>;
 
     const ArchiveRoute = () => 
-    <ScrollView style={{ flex: 1, paddingTop: 10 }}>
+    <ScrollView style={styles.view}>
         {noteBanners2}
             { noteData ? (<></>) : 
                 (
-                    <Text>You have no archived notifications</Text>
+                    <Text style={styles.text}>You have no archived notifications</Text>
                 )
             }
     </ScrollView>;
@@ -72,7 +99,7 @@ const Notifications = (props) => {
         }
         axios({
             method: 'PUT',
-            url: `${REQ_NOTE}`,
+            url: `${notURL}`,
             headers: {
                 "Authorization":`${jwt}`
             },
@@ -132,7 +159,7 @@ const Notifications = (props) => {
 
     if (noteData) {
         noteBanners = noteData.map((req, ind) =>
-        <Banner style={{ marginBottom: 10, marginHorizontal: 10, borderRadius: 20 }}
+        <Banner style={styles.banner}
         key={req.notification_id} 
         visible={req.visible}
         actions={[{
@@ -141,19 +168,19 @@ const Notifications = (props) => {
                 }
             ]}
             >
-            {req.message}
+            <Text style={styles.text}>{req.message}</Text>
             </Banner>
         )
     }
 
     if (noteData) {
             noteBanners2 = noteData.map((req, ind) =>
-            <Banner style={{ marginBottom: 10, marginHorizontal: 10, borderRadius: 20 }}
+            <Banner style={styles.banner}
             key={req.notification_id} 
             visible={req.visible ? '' : 'true'} 
             actions={[]}
                 >
-                {req.message}
+                <Text style={styles.text}>{req.message}</Text>
                 </Banner>
             )
     }
@@ -168,20 +195,3 @@ const Notifications = (props) => {
   }
 
   export default Notifications
-
-  const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'flex-start',
-        padding: 10,
-    },
-    item: {
-        width: '50%',
-        padding: 10
-    },
-    text: {
-        fontSize: 10
-    }
-  })

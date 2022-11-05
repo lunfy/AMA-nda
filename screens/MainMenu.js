@@ -83,7 +83,7 @@ const MainMenu = (props) => {
                         </Dialog.Content>
                         <Dialog.Actions>
                             <Button onPress={hideDialog}>Continue</Button>
-                            <Button onPress={auth.signOut}>Log Out</Button>
+                            <Button onPress={() => auth.signOut()}>Log Out</Button>
                         </Dialog.Actions>
                     </Dialog>
                 </Portal>
